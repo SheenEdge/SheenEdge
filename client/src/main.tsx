@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')!).render(
   <Router>
   <Routes>
     <Route path="/" element={<Landing />} />
-    {/* Other routes */}
+
   </Routes>
 </Router>
 )
