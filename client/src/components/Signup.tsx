@@ -38,7 +38,7 @@ const SignUp = () => {
       const data = await response.json();
       setSuccess('Sign Up successful!'); // Show success message
       console.log('Sign Up successful:', data);
-      navigate('/home');
+      navigate('/');
     } catch (error) {
       setError(error.message);
     }

@@ -12,7 +12,9 @@ import Login from './components/login.tsx'
 createRoot(document.getElementById('root')!).render(
   <Router>
   <Routes>
-    <Route path="/" element={<Login />} />
+  <Route index element={<Landing />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<SignUp />} />
 
   </Routes>
 </Router>

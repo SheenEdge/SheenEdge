@@ -21,7 +21,9 @@ const createUser =asyncHandler ( async (req , res) =>{
         email,
         password,
     })
-    res.status(201).json(user);
+    const userWithoutPassword = await User.findById(user._id).select('-password');
+
+    res.status(201).json(userWithoutPassword);
 });
 
 const logoutUser = (req, res) =>{

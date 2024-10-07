@@ -30,9 +30,8 @@ const Login = () => {
 
       const data = await response.json();
       console.log('Login successful:', data);
-      navigate('/home'); // Redirect to the home page
-      // Fetch user data after successful login
-     // fetchUserData(data.userId); // Assuming the response includes userId
+      navigate('/'); // Redirect to the home page
+    
     } catch (error) {
       setError(error.message); // Display the error message
     }
