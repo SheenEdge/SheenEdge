@@ -30,42 +30,14 @@ const Login = () => {
 
       const data = await response.json();
       console.log('Login successful:', data);
-
-      // Fetch user data after successful login
-      fetchUserData(data.userId); // Assuming the response includes userId
-    } catch (error) {
-      setError(error.message); // Display the error message
-    }
-  };
-
-  const fetchUserData = async (userId) => {
-    // Replace with your API URL for retrieving user data
-    const userDataUrl = `http://localhost:5800/api/user/current${userId}`;
-
-    try {
-      const response = await fetch(userDataUrl, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add authorization token if required
-          // 'Authorization': `Bearer your_token_here`, // Optional
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-      }
-
-      const userData = await response.json();
-      console.log('User data retrieved:', userData);
-
-      // Navigate to the home page after successfully fetching user data
       navigate('/home'); // Redirect to the home page
+      // Fetch user data after successful login
+     // fetchUserData(data.userId); // Assuming the response includes userId
     } catch (error) {
       setError(error.message); // Display the error message
     }
   };
+
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-800">

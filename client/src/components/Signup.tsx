@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
-  const [fullname, setFullname] = useState('');
-  const [username, setUsername] = useState('');
+  const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -29,7 +28,7 @@ const SignUp = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fullname, username, email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       if (!response.ok) {
@@ -39,38 +38,9 @@ const SignUp = () => {
       const data = await response.json();
       setSuccess('Sign Up successful!'); // Show success message
       console.log('Sign Up successful:', data);
-
-      // Now fetch user data
-      fetchUserData(data.userId); // Assuming the response includes userId
+      navigate('/home');
     } catch (error) {
       setError(error.message);
-    }
-  };
-
-  const fetchUserData = async (userId) => {
-    // Replace with your API URL for retrieving user data
-    const userDataUrl = `http://localhost:5800/api/user/current${userId}`;
-
-    try {
-      const response = await fetch(userDataUrl, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-      }
-
-      const userData = await response.json();
-      console.log('User data retrieved:', userData);
-
-      // Navigate to the home page after successfully fetching user data
-      navigate('/home'); // Redirect to the home page
-    } catch (error) {
-      setError(error.message); // Display the error message
     }
   };
 
@@ -87,19 +57,8 @@ const SignUp = () => {
               type="text"
               id="fullname"
               className="w-full p-2 rounded border border-gray-600 bg-gray-800 text-white"
-              value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-300 mb-1" htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              className="w-full p-2 rounded border border-gray-600 bg-gray-800 text-white"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={name}
+              onChange={(e) => setname(e.target.value)}
               required
             />
           </div>
