@@ -29,6 +29,29 @@ const Output = ({ editorRef, language }) => {
     }
   };
 
+
+  const saveCode = async () => {
+
+    let content = editorRef.current.getValue();
+    if (!content) return;
+    console.log(JSON.stringify({ content }));
+    const response = await fetch("http://localhost:5800/api/codes/save/67055c565a0a0e861b1c6490", {
+      method: "PUT",
+      credentials: 'include',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content }),  // Ensure JSON is formatted properly
+    });
+  
+    if (response.ok) {
+      console.log("Content saved successfully!");
+    } else {
+      const errorData = await response.json();
+      console.error("Error:", errorData.message);
+    }
+  }
+
   return (
     <Box w="50%">
       <Text mb={2} fontSize="lg">
@@ -43,6 +66,16 @@ const Output = ({ editorRef, language }) => {
       >
         Run Code
       </Button>
+      <Button
+        variant="outline"
+        colorScheme="green"
+        mb={4}
+        ml={8}
+        isLoading={isLoading}
+        onClick={saveCode}
+      >
+        Save Code
+      </Button>
       <Box
         height="75vh"
         p={2}
@@ -55,6 +88,7 @@ const Output = ({ editorRef, language }) => {
           ? output.map((line, i) => <Text key={i}>{line}</Text>)
           : 'Click "Run Code" to see the output here'}
       </Box>
+      
     </Box>
   );
 };

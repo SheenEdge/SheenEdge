@@ -51,6 +51,7 @@ const saveContent = asyncHandler(async (req, res) =>{
         })
     }
     const code = await CodeFile.findById(req.params.id)
+    console.log(code)
     const Access = code.Access;
     if(!Access.includes(req.user.id)){
         return res.status(401).json({

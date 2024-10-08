@@ -10,7 +10,8 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    const user = {email, password}
+    console.log(user);
     // Replace with your API URL
     const apiUrl = 'http://localhost:5800/api/user/login';
 
@@ -21,7 +22,7 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(user),
       });
 
       if (!response.ok) {
