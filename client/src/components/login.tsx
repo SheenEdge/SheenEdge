@@ -39,9 +39,13 @@ const Login = () => {
 
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-800">
-      <div className="bg-gray-900 p-8 rounded-lg shadow-lg w-80">
-        <h2 className="text-2xl font-bold text-center text-white mb-4">Login</h2>
+    <div className="flex items-center justify-center h-screen bg-gray-800 w-full">
+      <div className='w-[50%] bg-slate-900 h-[70%] rounded-bl-3xl'>
+        <img src="" alt="" />
+      </div>
+      <div className="bg-gray-900 p-8 rounded-lg flex flex-col justify-center shadow-lg w-[35%] h-[70%] rounded-tr-3xl">
+        <h2 className="text-4xl font-bold text-center text-white mb-[15%]">Login</h2>
+        
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
@@ -73,6 +77,11 @@ const Login = () => {
             Login
           </button>
         </form>
+
+        <div className='flex justify-center items-center mt-[4%]'>
+        <hr className='bg-gray-800  w-[45%]'/> <p className='mb-[1%] mx-[2%] text-white'>or</p> <hr className='bg-gray-800 w-[45%]'/>
+        </div>
+
         <p className="text-center text-gray-300 mt-4">
           Don't have an account? 
           <Link to="/signup" className="text-blue-500 hover:underline ml-1">

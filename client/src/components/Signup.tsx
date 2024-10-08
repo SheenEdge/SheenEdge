@@ -45,9 +45,10 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-800">
-      <div className="bg-gray-900 p-8 rounded-lg shadow-lg w-80">
-        <h2 className="text-2xl font-bold text-center text-white mb-4">Sign Up</h2>
+    <div className="flex items-center justify-center h-screen w-full bg-gray-800">
+      
+      <div className="bg-gray-900 p-8 rounded-tl-3xl rounded-lg shadow-lg w-[35%] h-[70%]">
+        <h2 className="text-4xl font-bold text-center text-white mb-[11%]">Sign Up</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         {success && <p className="text-green-500 text-center mb-4">{success}</p>}
         <form onSubmit={handleSignUp}>
@@ -101,7 +102,11 @@ const SignUp = () => {
           >
             Sign Up
           </button>
+          
         </form>
+      </div>
+      <div className='w-[50%] bg-slate-900 h-[70%] rounded-br-3xl'>
+        <img src="" alt="" />
       </div>
     </div>
   );

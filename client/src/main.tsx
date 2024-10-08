@@ -13,8 +13,10 @@ createRoot(document.getElementById('root')!).render(
   <Router>
   <Routes>
   <Route index element={<Landing />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<SignUp />} />
+  <Route path="/" element={<Landing />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/home" element={<Landing />} />
+    <Route path="/signUp" element={<SignUp/>} />
 
   </Routes>
 </Router>

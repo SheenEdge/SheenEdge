@@ -12,6 +12,9 @@ export default function Landing() {
           <span className="text-2xl font-bold">SheenEdge</span>
         </div>
         <nav className="hidden md:flex space-x-6">
+          <Link to="/codo" className="hover:text-blue-400 transition-colors">
+            Codo
+          </Link>
           <Link to="#features" className="hover:text-blue-400 transition-colors">
             Features
           </Link>
@@ -22,9 +25,20 @@ export default function Landing() {
             Resources
           </Link>
         </nav>
-        <Button variant="outline" className="hidden md:inline-flex">
-          Get Started
-        </Button>
+        <Link to="/login"  className="hidden md:inline-flex hover:text-slate-100 active:bg-[rgb(17,24,39)] hover:bg-[rgb(31,41,55)] shadow-lg bg-white hover:border-[rgb(31,41,55)] text-black px-3 py-2 rounded-xl border-2 border-black">
+        <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-5 h-5 mr-2"
+            >
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"></path>
+            </svg>
+            Sign in
+        </Link>
       </header>
 
       <main>
