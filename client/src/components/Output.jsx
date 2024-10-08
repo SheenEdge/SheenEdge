@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, Button, Text, useToast } from "@chakra-ui/react";
 import { executeCode } from "../api";
 
-const Output = ({ editorRef, language }) => {
+const Output = ({ editorRef, language,id }) => {
   const toast = useToast();
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ const Output = ({ editorRef, language }) => {
     let content = editorRef.current.getValue();
     if (!content) return;
     console.log(JSON.stringify({ content }));
-    const response = await fetch("http://localhost:5800/api/codes/save/67055c565a0a0e861b1c6490", {
+    const response = await fetch(`http://localhost:5800/api/codes/save/${id}`, {
       method: "PUT",
       credentials: 'include',
       headers: {

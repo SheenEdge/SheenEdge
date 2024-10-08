@@ -21,7 +21,7 @@ createRoot(document.getElementById('root')!).render(
     <Route path="/login" element={<Login />} />
     <Route path="/home" element={<Landing />} />
     <Route path="/signUp" element={<SignUp/>} />
-    <Route path="/codo" element={<Codo/>} />
+    <Route path="/codo/:id" element={<Codo/>} />
   </Routes>
 </Router>
 </ChakraProvider>
