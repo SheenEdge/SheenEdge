@@ -45,18 +45,20 @@ export default function Component() {
   const [selectedFile, setSelectedFile] = useState<FileType | null>(null)
 
   const handleCreateFile = async () => {
-    if (newFileName && newFileLanguage && newFileContent) {
+    if (newFileName && newFileLanguage) {
       try {
         const response = await fetch(`http://localhost:5800/api/codes/create`, {
           method: "POST",
+          credentials: 'include',
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name: newFileName, language: newFileLanguage, content: newFileContent }),
+          body: JSON.stringify({ FileName: newFileName, language: newFileLanguage}),
         })
 
         if (response.ok) {
           const result = await response.json()
+          console.log(result);
           const newFile: FileType = {
             id: result.id, // Store the ID returned from the API
             name: newFileName,

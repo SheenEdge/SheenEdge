@@ -103,7 +103,8 @@ const Output = ({ editorRef, language, id }) => {
       try {
         // API call to store the new email in the database
         const response = await fetch(`http://localhost:5800/api/codes/give/${id}`, {
-          method: "POST",
+          method: "PUT",
+          credentials: 'include',
           headers: {
             "Content-Type": "application/json",
           },
@@ -149,7 +150,8 @@ const Output = ({ editorRef, language, id }) => {
     try {
       // API call to remove the email from the database
       const response = await fetch(`http://localhost:5800/api/codes/take/${id}`, {
-        method: "DELETE",
+        method: "PUT",
+        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
         },
