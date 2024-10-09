@@ -44,19 +44,39 @@ export default function Component() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedFile, setSelectedFile] = useState<FileType | null>(null)
 
-  const handleCreateFile = () => {
+  const handleCreateFile = async () => {
     if (newFileName && newFileLanguage && newFileContent) {
-      const newFile: FileType = {
-        id: Date.now().toString(),
-        name: newFileName,
-        language: newFileLanguage,
-        content: newFileContent,
+      try {
+        const response = await fetch(`http://localhost:5800/api/codes/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: newFileName, language: newFileLanguage, content: newFileContent }),
+        })
+
+        if (response.ok) {
+          const result = await response.json()
+          const newFile: FileType = {
+            id: result.id, // Store the ID returned from the API
+            name: newFileName,
+            language: newFileLanguage,
+            content: newFileContent,
+          }
+          setFiles([...files, newFile])
+          setNewFileName("")
+          setNewFileLanguage("")
+          setNewFileContent("")
+          setIsModalOpen(false)
+        } else {
+          const errorData = await response.json()
+          console.error("Failed to create file:", errorData.message)
+        }
+      } catch (error) {
+        console.error("Error:", error)
       }
-      setFiles([...files, newFile])
-      setNewFileName("")
-      setNewFileLanguage("")
-      setNewFileContent("")
-      setIsModalOpen(false)
+    } else {
+      console.error("Input Error: Please provide all fields.")
     }
   }
 
