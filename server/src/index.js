@@ -14,7 +14,7 @@ const { isAuthenticated } = require("./Middelware/isAuthenticated");
 const { isAdmin} = require("./Middelware/isAdmin");
 
 // Connecting to the database 
-connectDb();
+//connectDb();
 // Defining port
 const port =process.env.PORT || 5000;
 
