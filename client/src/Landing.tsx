@@ -1,9 +1,12 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Code2, Users, Map, BookOpen, ChevronRight } from "lucide-react"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Code2, Users, Map, BookOpen, ChevronRight, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Landing() {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <header className="container mx-auto px-4 py-6 flex justify-between items-center">
@@ -25,23 +28,64 @@ export default function Landing() {
             Resources
           </Link>
         </nav>
-        <Link to="/login"  className="hidden md:inline-flex hover:text-slate-100 active:bg-[rgb(17,24,39)] hover:bg-[rgb(31,41,55)] shadow-lg bg-white hover:border-[rgb(31,41,55)] text-black px-3 py-2 rounded-xl border-2 border-black">
-        <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-5 h-5 mr-2"
-            >
-              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"></path>
-            </svg>
-            Sign in
+        <Link to="/login" className="hidden md:inline-flex hover:text-slate-100 active:bg-[rgb(17,24,39)] hover:bg-[rgb(31,41,55)] shadow-lg bg-white hover:border-[rgb(31,41,55)] text-black px-3 py-2 rounded-xl border-2 border-black">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-5 h-5 mr-2"
+          >
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"></path>
+          </svg>
+          Sign in
         </Link>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-white"
+          onClick={() => setIsNavOpen(!isNavOpen)}
+        >
+          {isNavOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
+        </button>
       </header>
 
-      <main>
+      {/* Mobile Navigation Menu */}
+      {isNavOpen && (
+        <nav className="md:hidden bg-gray-800 py-4">
+          <ul className="space-y-4 text-center">
+            <li>
+              <Link to="/codo" className="hover:text-blue-400 transition-colors">
+                Codo
+              </Link>
+            </li>
+            <li>
+              <Link to="/c" className="hover:text-blue-400 transition-colors">
+                Features
+              </Link>
+            </li>
+            <li>
+              <Link to="#community" className="hover:text-blue-400 transition-colors">
+                Community
+              </Link>
+            </li>
+            <li>
+              <Link to="#resources" className="hover:text-blue-400 transition-colors">
+                Resources
+              </Link>
+            </li>
+            <li>
+              <Link to="/login" className="hover:text-slate-100 transition-colors">
+                Sign in
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      )}
+
+<main>
         <section className="container mx-auto px-4 py-20 text-center">
           <h1 className="text-5xl font-bold mb-6">Empower Your Coding Journey</h1>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
@@ -217,5 +261,5 @@ export default function Landing() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
