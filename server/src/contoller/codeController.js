@@ -130,16 +130,28 @@ const getCodeFiles= asyncHandler(async (req,res)=>{
 
 // Get the particular code file
 
-const getCodeFile = asyncHandler(async (req,res)=>{
+const getCodeFile = asyncHandler(async (req, res) => {
     const id = req.params.id;
+    
+    // Find the code file by ID
     const codeFile = await CodeFile.findById(id);
-    if(!codeFile){
+    if (!codeFile) {
         return res.status(404).json({
-            message: "Code file not fouond"
-        })
+            message: "Code file not found"
+        });
     }
-    res.status(200).json(codeFile);
-})
+
+    // Fetch the emails of users whose IDs are in the 'Access' array
+    const users = await User.find({ _id: { $in: codeFile.Access } }, 'email'); // Fetch only email field
+    const emails = users.map(user => user.email); // Extract emails
+
+    // Respond with the code file, replacing Access IDs with emails
+    res.status(200).json({
+        ...codeFile.toObject(),
+        Access: emails // Replace Access with emails
+    });
+});
+
 
 // Deleting a code file 
 

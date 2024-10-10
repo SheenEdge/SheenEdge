@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './components/Signup.tsx'
 import Login from './components/login.tsx'
 import Codo from './Codo.tsx'
+import Rodo from './Rodo.tsx'
 import CodeFiles from './components/CodeFiles.tsx'
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme.js";
@@ -23,9 +24,14 @@ createRoot(document.getElementById('root')!).render(
     <Route path="/login" element={<Login />} />
     <Route path="/home" element={<Landing />} />
     <Route path="/signUp" element={<SignUp/>} />
-    <Route path="/codo/" element={<CodeFiles/>} />
+    <Route path="/codo" element={<CodeFiles/>} />
     <Route path="/codo/:id" element={<Codo/>} />
+<<<<<<< HEAD
     
+=======
+    <Route path="/rodo" element={<Rodo/>} />
+    <Route path="/c" element={<Output/>} />
+>>>>>>> 20e1e717af6b7c25fb09b9e7598a2297175ab0b9
   </Routes>
 </Router>
 </ChakraProvider>

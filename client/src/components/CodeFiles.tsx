@@ -29,7 +29,7 @@ type FileType = {
   id: string;
   name: string;
   language: string;
-  content: string;
+  createdAt: string;
 };
 
 export default function Component() {
@@ -39,6 +39,7 @@ export default function Component() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
+<<<<<<< HEAD
   useEffect(() => {
     const fetchFiles = async () => {
       try {
@@ -53,38 +54,67 @@ export default function Component() {
         if (response.ok) {
           const data = await response.json();
           setFiles(data); // Assuming the response data is an array of files
+=======
+  // Function to fetch files
+  const fetchFiles = async () => {
+    try {
+      const response = await fetch("http://localhost:5800/api/codes", {
+        method: "GET",
+        credentials: "include", // Make sure cookies are sent
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const processedFiles = data.map((file: any) => ({
+          id: file._id,
+          name: file.FileName,
+          language: file.language,
+          createdAt: new Date(file.createdAt).toLocaleDateString(), // Format the date
+        }));
+        setFiles(processedFiles);
+      } else {
+        if (response.status === 401) {
+          console.error("Unauthorized: Please log in.");
+          navigate("/login");
+>>>>>>> 20e1e717af6b7c25fb09b9e7598a2297175ab0b9
         } else {
-          console.error("Failed to fetch files");
+          console.error("Failed to fetch files.");
         }
-      } catch (error) {
-        console.error("Error fetching files:", error);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching files:", error);
+    }
+  };
 
+  // Fetch files when component mounts
+  useEffect(() => {
     fetchFiles();
+    console.log("called");
   }, []);
 
+  // Create new file handler
   const handleCreateFile = async () => {
     if (newFileName && newFileLanguage) {
       try {
         const response = await fetch(`http://localhost:5800/api/codes/create`, {
           method: "POST",
-          credentials: 'include',
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ FileName: newFileName, language: newFileLanguage }),
+          body: JSON.stringify({
+            FileName: newFileName,
+            language: newFileLanguage,
+          }),
         });
 
         if (response.ok) {
-          const result = await response.json();
-          const newFile: FileType = {
-            id: result.id, // Store the ID returned from the API
-            name: newFileName,
-            language: newFileLanguage,
-            content: "", // Initially no content
-          };
-          setFiles([...files, newFile]);
+          await response.json(); // You may not need to store the result if not used
+          // Refetch the files
+          fetchFiles();
+          // Clear the input fields and close the modal
           setNewFileName("");
           setNewFileLanguage("");
           setIsModalOpen(false);
@@ -100,17 +130,48 @@ export default function Component() {
     }
   };
 
+<<<<<<< HEAD
+=======
+  // Fetch file content when clicked
+  const handleFileClick = async (file: FileType) => {
+    try {
+      const response = await fetch(`http://localhost:5800/api/codes/${file.id}`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // Use data.content if needed
+        navigate(`/codo/${file.id}`); // Navigate to file view
+      } else {
+        console.error("Failed to fetch file content");
+      }
+    } catch (error) {
+      console.error("Error fetching file content:", error);
+    }
+  };
+
+>>>>>>> 20e1e717af6b7c25fb09b9e7598a2297175ab0b9
   return (
     <div className="container mx-auto p-4 min-h-screen bg-gray-900 text-gray-100">
       <h1 className="text-2xl font-bold mb-4">Your Files</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
         {files.map((file) => (
-          <Card key={file.id} className="bg-gray-800 text-gray-100 cursor-pointer hover:bg-gray-700 transition-colors" onClick={() => handleFileClick(file)}>
+          <Card
+            key={file.id}
+            className="bg-gray-800 text-gray-100 cursor-pointer hover:bg-gray-700 transition-colors"
+            onClick={() => handleFileClick(file)}
+          >
             <CardHeader className="flex flex-row items-center space-x-4 pb-2">
               <File className="h-8 w-8 text-blue-400" />
               <div>
                 <CardTitle>{file.name}</CardTitle>
-                <CardDescription className="text-gray-400">{file.language}</CardDescription>
+                <CardDescription className="text-gray-400">
+                  {file.language} - {file.createdAt}
+                </CardDescription>
               </div>
             </CardHeader>
           </Card>
@@ -118,7 +179,10 @@ export default function Component() {
       </div>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="bg-blue-600 text-white hover:bg-blue-700">
+          <Button
+            variant="outline"
+            className="bg-blue-600 text-white hover:bg-blue-700"
+          >
             <Plus className="mr-2 h-4 w-4" /> Create New File
           </Button>
         </DialogTrigger>
@@ -159,7 +223,12 @@ export default function Component() {
               </Select>
             </div>
           </div>
-          <Button onClick={handleCreateFile} className="bg-blue-600 text-white hover:bg-blue-700">Create File</Button>
+          <Button
+            onClick={handleCreateFile}
+            className="bg-blue-600 text-white hover:bg-blue-700"
+          >
+            Create File
+          </Button>
         </DialogContent>
       </Dialog>
     </div>
