@@ -39,40 +39,42 @@ export default function Component() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
+  // Function to fetch files
+  const fetchFiles = async () => {
+    try {
+      const response = await fetch("http://localhost:5800/api/codes", {
+        method: "GET",
+        credentials: "include", // Make sure cookies are sent
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const processedFiles = data.map((file: any) => ({
+          id: file._id,
+          name: file.FileName,
+          language: file.language,
+          createdAt: new Date(file.createdAt).toLocaleDateString(), // Format the date
+        }));
+        setFiles(processedFiles);
+      } else {
+        if (response.status === 401) {
+          console.error("Unauthorized: Please log in.");
+          navigate("/login");
+        } else {
+          console.error("Failed to fetch files.");
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching files:", error);
+    }
+  };
+
   // Fetch files when component mounts
   useEffect(() => {
-    const fetchFiles = async () => {
-      try {
-        const response = await fetch("http://localhost:5800/api/codes", {
-          method: "GET",
-          credentials: "include", // Make sure cookies are sent
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          const processedFiles = data.map((file: any) => ({
-            id: file._id,
-            name: file.FileName,
-            language: file.language,
-            createdAt: new Date(file.createdAt).toLocaleDateString(), // Format the date
-          }));
-          setFiles(processedFiles);
-        } else {
-          if (response.status === 401) {
-            console.error("Unauthorized: Please log in.");
-            navigate("/login");
-          } else {
-            console.error("Failed to fetch files.");
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching files:", error);
-      }
-    };
-
     fetchFiles();
+    console.log("called");
   }, []);
 
   // Create new file handler
@@ -92,14 +94,10 @@ export default function Component() {
         });
 
         if (response.ok) {
-          const result = await response.json();
-          const newFile: FileType = {
-            id: result.id,
-            name: newFileName,
-            language: newFileLanguage,
-            createdAt: new Date().toLocaleDateString(), // Set to current date
-          };
-          setFiles([...files, newFile]);
+          await response.json(); // You may not need to store the result if not used
+          // Refetch the files
+          fetchFiles();
+          // Clear the input fields and close the modal
           setNewFileName("");
           setNewFileLanguage("");
           setIsModalOpen(false);

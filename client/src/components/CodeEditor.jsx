@@ -1,51 +1,82 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Box, HStack } from "@chakra-ui/react";
 import { Editor } from "@monaco-editor/react";
 import LanguageSelector from "./LanguageSelector";
-import { CODE_SNIPPETS } from "../constants";
 import Output from "./Output";
+import axios from "axios"; // Assuming axios is used for API calls
 
-const CodeEditor = ({id}) => {
-  console.log(id)
+const CodeEditor = ({ id }) => {
   const editorRef = useRef();
-  const [value, setValue] = useState("");
-  const [language, setLanguage] = useState("javascript");
+  const [value, setValue] = useState(""); // Code content
+  const [language, setLanguage] = useState("javascript"); // Default language
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+
+  // Fetch the code file data when the component mounts
+  useEffect(() => {
+    const fetchCodeFile = async () => {
+      try {
+        const response = await fetch(`http://localhost:5800/api/codes/${id}`, {
+          method: 'GET',
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const data = await response.json(); // Parse the JSON data
+        const { content, language } = data; // Destructure the response
+        setValue(content); // Set the code content
+        setLanguage(language); // Set the programming language
+        setIsLoading(false); // Loading complete
+      } catch (error) {
+        console.error('Error fetching the code file:', error);
+        setIsLoading(false); // Stop loading on error
+      }
+    };
+  
+    fetchCodeFile();
+  }, [id]);
+  
 
   const onMount = (editor) => {
     editorRef.current = editor;
     editor.focus();
   };
 
-  const onSelect = (language) => {
-    setLanguage(language);
-    setValue(CODE_SNIPPETS[language]);
+  const onSelect = (selectedLanguage) => {
+    setLanguage(selectedLanguage);
+    setValue(CODE_SNIPPETS[selectedLanguage]); // Optional: Load a snippet based on the selected language
   };
 
+  if (isLoading) {
+    return <Box>Loading...</Box>; // Show a loading indicator while fetching data
+  }
+
   return (
-    
     <Box>
       <HStack spacing={4}>
-      <Box w="50%">
+        <Box w="50%">
           <LanguageSelector language={language} onSelect={onSelect} />
           <Editor
             options={{
-              minimap: {
-                enabled: false,
-              },
+              minimap: { enabled: false },
             }}
             height="75vh"
             theme="vs-dark"
             language={language}
-            defaultValue={CODE_SNIPPETS[language]}
+            value={value} // Dynamic value from the backend
             onMount={onMount}
-            value={value}
-            onChange={(value) => setValue(value)}
+            onChange={(newValue) => setValue(newValue)}
           />
         </Box>
-        <Output editorRef={editorRef} language={language} id={id}/>
+        <Output editorRef={editorRef} language={language} id={id} />
       </HStack>
     </Box>
-
   );
 };
+
 export default CodeEditor;
