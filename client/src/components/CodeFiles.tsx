@@ -42,7 +42,14 @@ export default function Component() {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await fetch(`http://localhost:5800/api/codes`);
+        const response = await fetch(`http://localhost:5800/api/codes`,{
+          method: "GET",
+          credentials: 'include',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ FileName: newFileName, language: newFileLanguage }),
+        });
         if (response.ok) {
           const data = await response.json();
           setFiles(data); // Assuming the response data is an array of files
@@ -90,21 +97,6 @@ export default function Component() {
       }
     } else {
       console.error("Input Error: Please provide all fields.");
-    }
-  };
-
-  const handleFileClick = async (file: FileType) => {
-    try {
-      const response = await fetch(`http://localhost:5800/api/codes/${file.id}`); // Fetch file content by ID
-      if (response.ok) {
-        const data = await response.json();
-        // You can use the content if needed, or just navigate to the URL
-        navigate(`http://localhost:5173/codo/${file.id}`); // Navigate to the desired URL
-      } else {
-        console.error("Failed to fetch file content");
-      }
-    } catch (error) {
-      console.error("Error fetching file content:", error);
     }
   };
 

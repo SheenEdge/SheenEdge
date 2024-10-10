@@ -15,7 +15,7 @@ export default function Landing() {
           <Link to="/codo" className="hover:text-blue-400 transition-colors">
             Codo
           </Link>
-          <Link to="/c" className="hover:text-blue-400 transition-colors">
+          <Link to="#features" className="hover:text-blue-400 transition-colors">
             Features
           </Link>
           <Link to="#community" className="hover:text-blue-400 transition-colors">
