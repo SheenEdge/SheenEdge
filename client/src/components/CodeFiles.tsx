@@ -39,22 +39,6 @@ export default function Component() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
-<<<<<<< HEAD
-  useEffect(() => {
-    const fetchFiles = async () => {
-      try {
-        const response = await fetch(`http://localhost:5800/api/codes`,{
-          method: "GET",
-          credentials: 'include',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ FileName: newFileName, language: newFileLanguage }),
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setFiles(data); // Assuming the response data is an array of files
-=======
   // Function to fetch files
   const fetchFiles = async () => {
     try {
@@ -78,7 +62,6 @@ export default function Component() {
         if (response.status === 401) {
           console.error("Unauthorized: Please log in.");
           navigate("/login");
->>>>>>> 20e1e717af6b7c25fb09b9e7598a2297175ab0b9
         } else {
           console.error("Failed to fetch files.");
         }
@@ -117,7 +100,7 @@ export default function Component() {
           // Clear the input fields and close the modal
           setNewFileName("");
           setNewFileLanguage("");
-          setIsModalOpen(false);
+          setIsModalOpen(false);z
         } else {
           const errorData = await response.json();
           console.error("Failed to create file:", errorData.message);
@@ -130,8 +113,6 @@ export default function Component() {
     }
   };
 
-<<<<<<< HEAD
-=======
   // Fetch file content when clicked
   const handleFileClick = async (file: FileType) => {
     try {
@@ -154,7 +135,6 @@ export default function Component() {
     }
   };
 
->>>>>>> 20e1e717af6b7c25fb09b9e7598a2297175ab0b9
   return (
     <div className="container mx-auto p-4 min-h-screen bg-gray-900 text-gray-100">
       <h1 className="text-2xl font-bold mb-4">Your Files</h1>

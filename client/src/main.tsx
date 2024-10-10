@@ -26,12 +26,8 @@ createRoot(document.getElementById('root')!).render(
     <Route path="/signUp" element={<SignUp/>} />
     <Route path="/codo" element={<CodeFiles/>} />
     <Route path="/codo/:id" element={<Codo/>} />
-<<<<<<< HEAD
     
-=======
     <Route path="/rodo" element={<Rodo/>} />
-    <Route path="/c" element={<Output/>} />
->>>>>>> 20e1e717af6b7c25fb09b9e7598a2297175ab0b9
   </Routes>
 </Router>
 </ChakraProvider>

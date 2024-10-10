@@ -62,7 +62,7 @@ export default function Landing() {
               </Link>
             </li>
             <li>
-              <Link to="/c" className="hover:text-blue-400 transition-colors">
+              <Link to="#Features" className="hover:text-blue-400 transition-colors">
                 Features
               </Link>
             </li>
