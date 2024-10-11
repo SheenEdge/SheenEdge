@@ -1,9 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Send } from "lucide-react"
+import React, { useState, useRef, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Send } from "lucide-react";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// Initialize Google Generative AI with the API key
+const genAI = new GoogleGenerativeAI(process.env.REACT_APP_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 interface Message {
   id: number;
@@ -22,7 +27,15 @@ export default function TechLearningChat() {
     }
   }, [messages]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const fetchRoadmap = async (topic: string) => {
+    const prompt = `Provide a roadmap for learning ${topic}.`;
+    
+    // Generate content using the model
+    const result = await model.generateContent(prompt);
+    return result.response.text(); // Adjust based on the actual structure of the response
+  };
+
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
@@ -35,15 +48,25 @@ export default function TechLearningChat() {
     setMessages(prevMessages => [...prevMessages, newUserMessage]);
     setInputValue('');
 
-    // Simulate AI response
-    setTimeout(() => {
+    // Fetch the roadmap from the API
+    try {
+      const roadmapMessage = await fetchRoadmap(inputValue);
       const aiResponse: Message = {
         id: Date.now(),
-        text: `Here's some information about ${inputValue}: [AI-generated content about ${inputValue} would go here. This is a placeholder for actual AI-generated content.]`,
+        text: roadmapMessage,
         sender: 'ai',
       };
+
       setMessages(prevMessages => [...prevMessages, aiResponse]);
-    }, 1000);
+    } catch (error) {
+      const errorMessage: Message = {
+        id: Date.now(),
+        text: `Sorry, I couldn't fetch the roadmap for "${inputValue}". Please try again later.`,
+        sender: 'ai',
+      };
+
+      setMessages(prevMessages => [...prevMessages, errorMessage]);
+    }
   };
 
   return (
@@ -55,26 +78,14 @@ export default function TechLearningChat() {
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${
-              message.sender === 'user' ? 'justify-end' : 'justify-start'
-            } mb-4`}
+            className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}
           >
-            <div
-              className={`flex items-start ${
-                message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'
-              }`}
-            >
+            <div className={`flex items-start ${message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
               <Avatar className="w-8 h-8">
                 <AvatarImage src={message.sender === 'user' ? '/placeholder.svg?height=32&width=32' : '/placeholder.svg?height=32&width=32&text=AI'} alt={message.sender === 'user' ? 'User Avatar' : 'AI Avatar'} />
                 <AvatarFallback>{message.sender === 'user' ? 'U' : 'AI'}</AvatarFallback>
               </Avatar>
-              <div
-                className={`mx-2 p-3 rounded-lg ${
-                  message.sender === 'user'
-                    ? 'bg-blue-600'
-                    : 'bg-gray-700'
-                }`}
-              >
+              <div className={`mx-2 p-3 rounded-lg ${message.sender === 'user' ? 'bg-blue-600' : 'bg-gray-700'}`}>
                 {message.text}
               </div>
             </div>
