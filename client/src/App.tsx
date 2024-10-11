@@ -1,34 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './index.css'
+import Landing from './Landing.tsx'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SignUp from './components/Signup.tsx'
+import Login from './components/login.tsx'
+import Codo from './Codo.tsx'
+import Rodo from './Rodo.tsx'
+import CodeFiles from './components/CodeFiles.tsx'
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from "./theme.tsx";
+import {setUser} from './utils/Auth.tsx'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
+  setUser();
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ChakraProvider theme={theme}>
+  <Router>
+  <Routes>
+  <Route index element={<Landing />} />
+  <Route path="/" element={<Landing />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/home" element={<Landing />} />
+    <Route path="/signUp" element={<SignUp/>} />
+    <Route path="/codo" element={<CodeFiles/>} />
+    <Route path="/codo/:id" element={<Codo/>} />
+    <Route path="/rodo" element={<Rodo/>} />
+  </Routes>
+</Router>
+</ChakraProvider>
   )
 }
 

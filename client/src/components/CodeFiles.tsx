@@ -24,7 +24,8 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { File, Plus } from "lucide-react";
-
+import { isLoggedIn } from "@/utils/Auth";
+import { useToast } from "@chakra-ui/react";
 type FileType = {
   id: string;
   name: string;
@@ -32,12 +33,14 @@ type FileType = {
   createdAt: string;
 };
 
-export default function Component() {
+export default function CodeFiles() {
   const [files, setFiles] = useState<FileType[]>([]);
   const [newFileName, setNewFileName] = useState("");
   const [newFileLanguage, setNewFileLanguage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
+  const LoggedIn = isLoggedIn();
+  {LoggedIn? null : navigate('/login');}
 
   // Function to fetch files
   const fetchFiles = async () => {

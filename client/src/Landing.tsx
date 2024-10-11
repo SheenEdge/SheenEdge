@@ -3,10 +3,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Code2, Users, Map, BookOpen, ChevronRight, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from './redux/store';
+import { logout } from './redux/slice/userSlice';
+
 
 export default function Landing() {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const user = useSelector((state: RootState) => state.user._id);
+  const dispatch = useDispatch();
+  const handleLogout = async () => {
+    const response = await fetch("http://localhost:5800/api/user/logout", {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+  });
 
+  if (response.ok) {
+      dispatch(logout());
+      console.log("Logged out")
+  } else {
+      console.error('Error fetching user data');
+  }
+  };
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <header className="container mx-auto px-4 py-6 flex justify-between items-center">
@@ -28,20 +49,14 @@ export default function Landing() {
             Resources
           </Link>
         </nav>
-        <Link to="/login" className="hidden md:inline-flex hover:text-slate-100 active:bg-[rgb(17,24,39)] hover:bg-[rgb(31,41,55)] shadow-lg bg-white hover:border-[rgb(31,41,55)] text-black px-3 py-2 rounded-xl border-2 border-black">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-5 h-5 mr-2"
-          >
-            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"></path>
-          </svg>
-          Sign in
-        </Link>
+        {user? 
+        <Button variant="outline" onClick={handleLogout}>
+          Log Out
+        </Button>
+        :<Button variant="outline">
+          <Link to="/login">Login</Link>
+        </Button>
+        }
 
         {/* Mobile Menu Button */}
         <button
@@ -79,6 +94,11 @@ export default function Landing() {
             <li>
               <Link to="/login" className="hover:text-slate-100 transition-colors">
                 Sign in
+              </Link>
+            </li>
+            <li>
+              <Link to="/login" className="hover:text-slate-100 transition-colors">
+                Sign Up
               </Link>
             </li>
           </ul>

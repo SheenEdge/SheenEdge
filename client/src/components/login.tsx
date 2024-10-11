@@ -1,17 +1,20 @@
 // src/Login.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUserDet } from '../redux/slice/userSlice'; // Import Redux action
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate(); // Hook to programmatically navigate
+  const dispatch = useDispatch(); // To dispatch actions
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const user = {email, password}
-    console.log(user);
+    const user = { email, password };
+
     // Replace with your API URL
     const apiUrl = 'http://localhost:5800/api/user/login';
 
@@ -26,18 +29,19 @@ const Login = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Login failed'); // Throwing an error if response is not ok
+        throw new Error('Login failed');
       }
 
       const data = await response.json();
+      // Dispatch the user data to Redux
+      dispatch(setUserDet(data)); // Assuming `data.user` contains user info
       console.log('Login successful:', data);
       navigate('/'); // Redirect to the home page
-    
+
     } catch (error) {
       setError(error.message); // Display the error message
     }
   };
-
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-800 w-full">
@@ -80,7 +84,9 @@ const Login = () => {
         </form>
 
         <div className='flex justify-center items-center mt-[4%]'>
-        <hr className='bg-gray-800  w-[45%]'/> <p className='mb-[1%] mx-[2%] text-white'>or</p> <hr className='bg-gray-800 w-[45%]'/>
+          <hr className='bg-gray-800  w-[45%]' /> 
+          <p className='mb-[1%] mx-[2%] text-white'>or</p> 
+          <hr className='bg-gray-800 w-[45%]' />
         </div>
 
         <p className="text-center text-gray-300 mt-4">
