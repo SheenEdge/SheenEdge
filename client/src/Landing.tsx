@@ -4,26 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Code2, Users, Map, BookOpen, ChevronRight, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
-function getUser(){
-  let user = localStorage.getItem('user');
-  if(user){
-    user = JSON.parse(user);
-  }
-  else{
-    user = null;
-  }
-
-}
-
 export default function Landing() {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [user,setUser]=useState(getUser());
-
-  const handleLogin=()=>{
-    localStorage.removeItem('user');
-    set user(null);
-
-  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
@@ -46,25 +28,7 @@ export default function Landing() {
             Resources
           </Link>
         </nav>
-        {user?(
-          <button id="logout" className="hidden md:inline-flex hover:text-slate-100 active:bg-[rgb(17,24,39)] hover:bg-[rgb(31,41,55)] shadow-lg bg-white hover:border-[rgb(31,41,55)] text-black px-3 py-2 rounded-xl border-2 border-black"
-          onClick={handleLogin}>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-5 h-5 mr-2"
-          >
-            
-            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"></path>
-          </svg>
-          Sign out
-        </button>
-        ):(
-          <Link to="/login" className="hidden md:inline-flex hover:text-slate-100 active:bg-[rgb(17,24,39)] hover:bg-[rgb(31,41,55)] shadow-lg bg-white hover:border-[rgb(31,41,55)] text-black px-3 py-2 rounded-xl border-2 border-black">
+        <Link to="/login" className="hidden md:inline-flex hover:text-slate-100 active:bg-[rgb(17,24,39)] hover:bg-[rgb(31,41,55)] shadow-lg bg-white hover:border-[rgb(31,41,55)] text-black px-3 py-2 rounded-xl border-2 border-black">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -78,7 +42,6 @@ export default function Landing() {
           </svg>
           Sign in
         </Link>
-        )}
 
         {/* Mobile Menu Button */}
         <button
