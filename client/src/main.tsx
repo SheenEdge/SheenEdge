@@ -12,11 +12,14 @@ import CodeFiles from './components/CodeFiles.tsx'
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme.js";
 import Output from './components/Output.jsx'
+import { Provider } from 'react-redux'
+import { store } from './redux/store.js'
 
 
 
 createRoot(document.getElementById('root')!).render(
   <ChakraProvider theme={theme}>
+    <Provider store={store}>
   <Router>
   <Routes>
   <Route index element={<Landing />} />
@@ -30,5 +33,6 @@ createRoot(document.getElementById('root')!).render(
     <Route path="/rodo" element={<Rodo/>} />
   </Routes>
 </Router>
+</Provider>
 </ChakraProvider>
 )
