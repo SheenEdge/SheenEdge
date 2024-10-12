@@ -39,7 +39,10 @@ export default function Landing() {
           <Link to="/codo" className="hover:text-blue-400 transition-colors">
             Codo
           </Link>
-          <Link to="#features" className="hover:text-blue-400 transition-colors">
+          <Link to="/rodo" className="hover:text-blue-400 transition-colors">
+            Rodo
+          </Link>
+          <Link to="" className="hover:text-blue-400 transition-colors">
             Features
           </Link>
           <Link to="#community" className="hover:text-blue-400 transition-colors">
@@ -53,9 +56,12 @@ export default function Landing() {
         <Button variant="outline" onClick={handleLogout}>
           Log Out
         </Button>
-        :<Button variant="outline">
+        :<div className="flex max-sm:hidden max-md:hidden"><Button variant="outline" className=" mr-[10px]">
           <Link to="/login">Login</Link>
         </Button>
+        <Button variant="outline" className=" mr-[10px]">
+          <Link to="/signup">Register</Link>
+        </Button></div>
         }
 
         {/* Mobile Menu Button */}
@@ -77,7 +83,12 @@ export default function Landing() {
               </Link>
             </li>
             <li>
-              <Link to="#Features" className="hover:text-blue-400 transition-colors">
+              <Link to="/rodo" className="hover:text-blue-400 transition-colors">
+                Rodo
+              </Link>
+            </li>
+            <li>
+              <Link to="#features"  className="hover:text-blue-400 transition-colors">
                 Features
               </Link>
             </li>
@@ -97,7 +108,7 @@ export default function Landing() {
               </Link>
             </li>
             <li>
-              <Link to="/login" className="hover:text-slate-100 transition-colors">
+              <Link to="/signup" className="hover:text-slate-100 transition-colors">
                 Sign Up
               </Link>
             </li>

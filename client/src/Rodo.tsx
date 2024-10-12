@@ -6,8 +6,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Send } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+const pi = 'AIzaSyANMLpP-FXW-w2SwqrZeylmWmwclHtGvF0';
+
 // Initialize Google Generative AI with the API key
-const genAI = new GoogleGenerativeAI(process.env.REACT_APP_API_KEY);
+const genAI = new GoogleGenerativeAI(pi);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 interface Message {
