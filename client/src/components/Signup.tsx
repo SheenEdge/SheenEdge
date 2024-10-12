@@ -1,5 +1,5 @@
 // src/SignUp.js
-import React, { useState } from 'react';
+import{ useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
@@ -9,9 +9,10 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const baseurl = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate(); // Hook to programmatically navigate
 
-  const handleSignUp = async (e) => {
+  const handleSignUp = async (e : any) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -19,11 +20,8 @@ const SignUp = () => {
       return;
     }
 
-    // Replace with your API URL
-    const apiUrl = 'http://localhost:5800/api/user/register';
-
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${baseurl}/api/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +37,7 @@ const SignUp = () => {
       setSuccess('Sign Up successful!'); // Show success message
       console.log('Sign Up successful:', data);
       navigate('/');
-    } catch (error) {
+    } catch (error : any) {
       setError(error.message);
     }
   };

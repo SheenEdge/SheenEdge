@@ -10,16 +10,16 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate(); // Hook to programmatically navigate
   const dispatch = useDispatch(); // To dispatch actions
+  const baseurl = import.meta.env.VITE_BASE_URL;
 
-  const handleLogin = async (e) => {
+
+  const handleLogin = async (e : any) => {
     e.preventDefault();
     const user = { email, password };
 
-    // Replace with your API URL
-    const apiUrl = 'http://localhost:5800/api/user/login';
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${baseurl}/api/user/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -38,7 +38,7 @@ const Login = () => {
       console.log('Login successful:', data);
       navigate('/'); // Redirect to the home page
 
-    } catch (error) {
+    } catch (error : any) {
       setError(error.message); // Display the error message
     }
   };

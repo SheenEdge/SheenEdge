@@ -12,8 +12,9 @@ export default function Landing() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const user = useSelector((state: RootState) => state.user._id);
   const dispatch = useDispatch();
+  const baseurl = import.meta.env.VITE_BASE_URL;
   const handleLogout = async () => {
-    const response = await fetch("http://localhost:5800/api/user/logout", {
+    const response = await fetch(`${baseurl}/api/user/logout`, {
       method: 'POST',
       credentials: 'include',
       headers: {
