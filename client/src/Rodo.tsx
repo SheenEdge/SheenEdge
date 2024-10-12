@@ -17,7 +17,7 @@ interface Message {
   sender: 'user' | 'ai';
 }
 
-export default function TechLearningChat() {
+export default function Rodo() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);

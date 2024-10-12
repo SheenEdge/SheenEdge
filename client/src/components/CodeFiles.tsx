@@ -24,7 +24,6 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { File, Plus } from "lucide-react";
-import { isLoggedIn } from "@/utils/Auth";
 import { useToast } from "@chakra-ui/react";
 type FileType = {
   id: string;
@@ -39,8 +38,7 @@ export default function CodeFiles() {
   const [newFileLanguage, setNewFileLanguage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
-  const LoggedIn = isLoggedIn();
-  {LoggedIn? null : navigate('/login');}
+  const toast = useToast();
 
   // Function to fetch files
   const fetchFiles = async () => {
@@ -63,6 +61,12 @@ export default function CodeFiles() {
         setFiles(processedFiles);
       } else {
         if (response.status === 401) {
+          toast({
+            title: "Error",
+            description: "Please log in.",
+            status: "error",
+            duration: 6000,
+          });
           console.error("Unauthorized: Please log in.");
           navigate("/login");
         } else {
@@ -103,7 +107,7 @@ export default function CodeFiles() {
           // Clear the input fields and close the modal
           setNewFileName("");
           setNewFileLanguage("");
-          setIsModalOpen(false);z
+          setIsModalOpen(false);
         } else {
           const errorData = await response.json();
           console.error("Failed to create file:", errorData.message);
@@ -127,7 +131,7 @@ export default function CodeFiles() {
         },
       });
       if (response.ok) {
-        const data = await response.json();
+        //const data = await response.json();
         // Use data.content if needed
         navigate(`/codo/${file.id}`); // Navigate to file view
       } else {
@@ -199,9 +203,10 @@ export default function CodeFiles() {
                 <SelectContent className="bg-gray-700 text-gray-100">
                   <SelectItem value="javascript">JavaScript</SelectItem>
                   <SelectItem value="python">Python</SelectItem>
-                  <SelectItem value="rust">Rust</SelectItem>
-                  <SelectItem value="go">Go</SelectItem>
+                  <SelectItem value="typescript">TypeScript</SelectItem>
+                  <SelectItem value="csharp">Csharp</SelectItem>
                   <SelectItem value="java">Java</SelectItem>
+                  <SelectItem value="php">PHP</SelectItem>
                 </SelectContent>
               </Select>
             </div>

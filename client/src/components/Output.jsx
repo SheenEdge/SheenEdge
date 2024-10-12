@@ -33,12 +33,12 @@ const Output = ({ editorRef, language, id }) => {
   const [newEmail, setNewEmail] = useState('');
   const [isRemoving, setIsRemoving] = useState(false); // State to toggle remove mode
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to control dropdown visibility
-
+  const toast = useToast();
   // Fetch emails on component mount
   useEffect(() => {
     const fetchEmails = async () => {
       try {
-        const response = await fetch(`http://localhost:5800/api/codes/access/${id}`, {
+        const response = await fetch(`http://localhost:5800/api/codes/${id}`, {
           method: "GET",
           credentials: 'include',
           headers: {
@@ -48,7 +48,7 @@ const Output = ({ editorRef, language, id }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setEmails(data.emails || []); // Assuming the response has an 'emails' field
+          setEmails(data.Access || []); // Assuming the response has an 'emails' field
         } else {
           throw new Error('Failed to fetch emails');
         }
@@ -134,8 +134,8 @@ const Output = ({ editorRef, language, id }) => {
   const handleEmailSubmit = async () => {
     if (newEmail) {
       try {
-        const response = await fetch(`http://localhost:5800/api/codes/${id}`, {
-          method: "GET",
+        const response = await fetch(`http://localhost:5800/api/codes/give/${id}`, {
+          method: "PUT",
           credentials: 'include',
           headers: {
             "Content-Type": "application/json",

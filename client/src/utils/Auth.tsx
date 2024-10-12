@@ -1,6 +1,8 @@
 import type { RootState } from '../redux/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserDet, logout } from '../redux/slice/userSlice';
+import { setUserDet } from '../redux/slice/userSlice';
+
+
 
 export const setUser = async () => {
     const user = useSelector((state: RootState) => state.user);
@@ -20,28 +22,21 @@ export const setUser = async () => {
     } 
 };
 
-export const signout = async (dispatch) => {
-    const response = await fetch("http://localhost:5800/api/user/logout", {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+// export const signout = async (dispatch) => {
+//     const response = await fetch("http://localhost:5800/api/user/logout", {
+//         method: 'POST',
+//         credentials: 'include',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//     });
 
-    if (response.ok) {
-        dispatch(logout());
-        console.log("Logged out")
-    } else {
-        console.error('Error fetching user data');
-    }
-};
+//     if (response.ok) {
+//         dispatch(logout());
+//         console.log("Logged out")
+//     } else {
+//         console.error('Error fetching user data');
+//     }
+// };
 
 
-export const isLoggedIn = () =>{
-    const user = useSelector((state: RootState) => state.user);
-    if(!user){
-        return false;
-    }
-    return true;
-}
