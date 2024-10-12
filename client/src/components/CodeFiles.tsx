@@ -40,7 +40,6 @@ export default function CodeFiles() {
   const navigate = useNavigate(); // Initialize useNavigate
   const toast = useToast();
   const baseurl = import.meta.env.VITE_BASE_URL;
-  console.log(baseurl);
   // Function to fetch files
   const fetchFiles = async () => {
     try {

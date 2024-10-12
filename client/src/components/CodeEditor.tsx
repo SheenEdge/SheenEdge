@@ -1,17 +1,20 @@
 import { useRef, useState, useEffect } from "react";
 import { Box, HStack } from "@chakra-ui/react";
-import { Editor } from "@monaco-editor/react";
+import { Editor } from "@monaco-editor/react"; // Use only Editor from @monaco-editor/react
 import LanguageSelector from "./LanguageSelector";
 import Output from "./Output";
-import axios from "axios"; // Assuming axios is used for API calls
+import * as monaco from 'monaco-editor'; // Import monaco for types and instance access
 
-const CodeEditor = ({ id }) => {
-  const editorRef = useRef();
-  const [value, setValue] = useState(""); // Code content
-  const [language, setLanguage] = useState("javascript"); // Default language
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+interface CodeEditorProps {
+  id: string;
+}
+
+const CodeEditor: React.FC<CodeEditorProps> = ({ id }) => {
+  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null); // Use monaco.editor types
+  const [value, setValue] = useState<string>(""); // Code content
+  const [language, setLanguage] = useState<string>("javascript"); // Default language
+  const [isLoading, setIsLoading] = useState<boolean>(true); // Loading state
   const baseurl = import.meta.env.VITE_BASE_URL;
-
 
   // Fetch the code file data when the component mounts
   useEffect(() => {
@@ -42,16 +45,15 @@ const CodeEditor = ({ id }) => {
   
     fetchCodeFile();
   }, [id]);
-  
 
-  const onMount = (editor) => {
-    editorRef.current = editor;
-    editor.focus();
+  // This function will store the editor instance and focus it
+  const onMount = (editorInstance: monaco.editor.IStandaloneCodeEditor) => {
+    editorRef.current = editorInstance;
+    editorInstance.focus();
   };
 
-  const onSelect = (selectedLanguage) => {
+  const onSelect = (selectedLanguage: string) => {
     setLanguage(selectedLanguage);
-    setValue(CODE_SNIPPETS[selectedLanguage]); // Optional: Load a snippet based on the selected language
   };
 
   if (isLoading) {
@@ -71,8 +73,8 @@ const CodeEditor = ({ id }) => {
             theme="vs-dark"
             language={language}
             value={value} // Dynamic value from the backend
-            onMount={onMount}
-            onChange={(newValue) => setValue(newValue)}
+            onMount={onMount} // Correct signature
+            onChange={(newValue) => setValue(newValue || "")}
           />
         </Box>
         <Output editorRef={editorRef} language={language} id={id} />

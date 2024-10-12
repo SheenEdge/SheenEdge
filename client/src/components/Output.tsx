@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, MutableRefObject } from "react";
 import {
   Box,
   Button,
@@ -20,18 +20,23 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { executeCode } from "../api";
-import { CloseIcon } from "@chakra-ui/icons"; // Import CloseIcon for remove button
+import { CloseIcon } from "@chakra-ui/icons";
 
-const Output = ({ editorRef, language, id }) => {
+// Define prop types for Output component
+interface OutputProps {
+  editorRef: MutableRefObject<any>; // Editor reference
+  language: any; // Programming language
+  id: string; // Code file ID
+}
 
-  
-  const [output, setOutput] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [emails, setEmails] = useState([]); // Initial email list
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newEmail, setNewEmail] = useState('');
-  const [isRemoving, setIsRemoving] = useState(false); // State to toggle remove mode
+const Output: React.FC<OutputProps> = ({ editorRef, language, id }) => {
+  const [output, setOutput] = useState<string[] | null>(null); // Code output
+  const [isLoading, setIsLoading] = useState(false); // Loading state for running code
+  const [isError, setIsError] = useState(false); // Error state for code output
+  const [emails, setEmails] = useState<string[]>([]); // List of emails with access
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state for new email input
+  const [newEmail, setNewEmail] = useState(''); // New email input
+  const [isRemoving, setIsRemoving] = useState(false); // State to toggle email removal
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to control dropdown visibility
   const toast = useToast();
   const baseurl = import.meta.env.VITE_BASE_URL;
@@ -50,7 +55,7 @@ const Output = ({ editorRef, language, id }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setEmails(data.Access || []); // Assuming the response has an 'emails' field
+          setEmails(data.Access || []); // Assuming 'Access' field in response contains emails
         } else {
           throw new Error('Failed to fetch emails');
         }
@@ -69,14 +74,14 @@ const Output = ({ editorRef, language, id }) => {
   }, [id]); // Depend on `id` to fetch emails for the correct code
 
   const runCode = async () => {
-    const sourceCode = editorRef.current.getValue();
+    const sourceCode = editorRef.current?.getValue();
     if (!sourceCode) return;
     try {
       setIsLoading(true);
       const { run: result } = await executeCode(language, sourceCode);
       setOutput(result.output.split("\n"));
       result.stderr ? setIsError(true) : setIsError(false);
-    } catch (error) {
+    } catch (error : any) {
       console.log(error);
       toast({
         title: "An error occurred.",
@@ -90,7 +95,7 @@ const Output = ({ editorRef, language, id }) => {
   };
 
   const saveCode = async () => {
-    const content = editorRef.current.getValue();
+    const content = editorRef.current?.getValue();
     if (!content) return;
 
     try {
@@ -180,7 +185,7 @@ const Output = ({ editorRef, language, id }) => {
     setIsRemoving(prev => !prev);
   };
 
-  const removeEmail = async (emailToRemove) => {
+  const removeEmail = async (emailToRemove: string) => {
     try {
       const response = await fetch(`${baseurl}/api/codes/take/${id}`, {
         method: "PUT",

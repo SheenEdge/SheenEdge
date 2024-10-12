@@ -1,5 +1,5 @@
 // src/SignUp.js
-import React, { useState } from 'react';
+import{ useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
@@ -12,7 +12,7 @@ const SignUp = () => {
   const baseurl = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate(); // Hook to programmatically navigate
 
-  const handleSignUp = async (e) => {
+  const handleSignUp = async (e : any) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -37,7 +37,7 @@ const SignUp = () => {
       setSuccess('Sign Up successful!'); // Show success message
       console.log('Sign Up successful:', data);
       navigate('/');
-    } catch (error) {
+    } catch (error : any) {
       setError(error.message);
     }
   };
