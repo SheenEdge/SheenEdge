@@ -119,7 +119,7 @@ const removeAccess = asyncHandler( async (req, res) =>{
 
 const getCodeFiles= asyncHandler(async (req,res)=>{
     const userId= req.user.id
-    const codeFiles= await CodeFile.find({UserId: userId});
+    const codeFiles = await CodeFile.find({ Access: { $in: [userId] } });
     if(!codeFiles){
         return res.status(204).json({
             message:"No code file present"
