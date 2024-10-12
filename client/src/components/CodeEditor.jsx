@@ -10,12 +10,14 @@ const CodeEditor = ({ id }) => {
   const [value, setValue] = useState(""); // Code content
   const [language, setLanguage] = useState("javascript"); // Default language
   const [isLoading, setIsLoading] = useState(true); // Loading state
+  const baseurl = import.meta.env.VITE_BASE_URL;
+
 
   // Fetch the code file data when the component mounts
   useEffect(() => {
     const fetchCodeFile = async () => {
       try {
-        const response = await fetch(`http://localhost:5800/api/codes/${id}`, {
+        const response = await fetch(`${baseurl}/api/codes/${id}`, {
           method: 'GET',
           credentials: "include",
           headers: {

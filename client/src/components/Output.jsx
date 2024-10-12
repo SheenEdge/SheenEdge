@@ -34,11 +34,13 @@ const Output = ({ editorRef, language, id }) => {
   const [isRemoving, setIsRemoving] = useState(false); // State to toggle remove mode
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to control dropdown visibility
   const toast = useToast();
+  const baseurl = import.meta.env.VITE_BASE_URL;
+
   // Fetch emails on component mount
   useEffect(() => {
     const fetchEmails = async () => {
       try {
-        const response = await fetch(`http://localhost:5800/api/codes/${id}`, {
+        const response = await fetch(`${baseurl}/api/codes/${id}`, {
           method: "GET",
           credentials: 'include',
           headers: {
@@ -93,7 +95,7 @@ const Output = ({ editorRef, language, id }) => {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5800/api/codes/save/${id}`, {
+      const response = await fetch(`${baseurl}/api/codes/save/${id}`, {
         method: "PUT",
         credentials: 'include',
         headers: {
@@ -134,7 +136,7 @@ const Output = ({ editorRef, language, id }) => {
   const handleEmailSubmit = async () => {
     if (newEmail) {
       try {
-        const response = await fetch(`http://localhost:5800/api/codes/give/${id}`, {
+        const response = await fetch(`${baseurl}/api/codes/give/${id}`, {
           method: "PUT",
           credentials: 'include',
           headers: {
@@ -180,7 +182,7 @@ const Output = ({ editorRef, language, id }) => {
 
   const removeEmail = async (emailToRemove) => {
     try {
-      const response = await fetch(`http://localhost:5800/api/codes/take/${id}`, {
+      const response = await fetch(`${baseurl}/api/codes/take/${id}`, {
         method: "PUT",
         credentials: 'include',
         headers: {

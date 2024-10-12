@@ -2,12 +2,13 @@ import type { RootState } from '../redux/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserDet } from '../redux/slice/userSlice';
 
+const baseurl = import.meta.env.VITE_BASE_URL;
 
 
 export const setUser = async () => {
     const user = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
-    const response = await fetch("http://localhost:5800/api/user/current", {
+    const response = await fetch(`${baseurl}/api/user/current`, {
         method: 'GET',
         credentials: 'include',
         headers: {

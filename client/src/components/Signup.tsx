@@ -9,6 +9,7 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const baseurl = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate(); // Hook to programmatically navigate
 
   const handleSignUp = async (e) => {
@@ -19,11 +20,8 @@ const SignUp = () => {
       return;
     }
 
-    // Replace with your API URL
-    const apiUrl = 'http://localhost:5800/api/user/register';
-
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${baseurl}/api/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

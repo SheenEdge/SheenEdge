@@ -39,11 +39,12 @@ export default function CodeFiles() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
   const toast = useToast();
-
+  const baseurl = import.meta.env.VITE_BASE_URL;
+  console.log(baseurl);
   // Function to fetch files
   const fetchFiles = async () => {
     try {
-      const response = await fetch("http://localhost:5800/api/codes", {
+      const response = await fetch(`${baseurl}/api/codes`, {
         method: "GET",
         credentials: "include", // Make sure cookies are sent
         headers: {
@@ -88,7 +89,7 @@ export default function CodeFiles() {
   const handleCreateFile = async () => {
     if (newFileName && newFileLanguage) {
       try {
-        const response = await fetch(`http://localhost:5800/api/codes/create`, {
+        const response = await fetch(`${baseurl}/api/codes/create`, {
           method: "POST",
           credentials: "include",
           headers: {
@@ -123,7 +124,7 @@ export default function CodeFiles() {
   // Fetch file content when clicked
   const handleFileClick = async (file: FileType) => {
     try {
-      const response = await fetch(`http://localhost:5800/api/codes/${file.id}`, {
+      const response = await fetch(`${baseurl}/api/codes/${file.id}`, {
         method: "GET",
         credentials: "include",
         headers: {
