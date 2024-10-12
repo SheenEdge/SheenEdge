@@ -6,6 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Send } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+
+
 // Initialize Google Generative AI with the API key
 const key = import.meta.env.VITE_GEMINI_KEY
 const genAI = new GoogleGenerativeAI(key);
