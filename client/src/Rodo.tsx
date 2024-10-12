@@ -7,7 +7,8 @@ import { Send } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Initialize Google Generative AI with the API key
-const genAI = new GoogleGenerativeAI(process.env.REACT_APP_API_KEY);
+const key = import.meta.env.VITE_GEMINI_KEY
+const genAI = new GoogleGenerativeAI(key);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 interface Message {
@@ -32,7 +33,9 @@ export default function TechLearningChat() {
     
     // Generate content using the model
     const result = await model.generateContent(prompt);
+    console.log(result.response.text())
     return result.response.text(); // Adjust based on the actual structure of the response
+
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -86,7 +89,12 @@ export default function TechLearningChat() {
                 <AvatarFallback>{message.sender === 'user' ? 'U' : 'AI'}</AvatarFallback>
               </Avatar>
               <div className={`mx-2 p-3 rounded-lg ${message.sender === 'user' ? 'bg-blue-600' : 'bg-gray-700'}`}>
-                {message.text}
+              {message.text.split('\n').map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
               </div>
             </div>
           </div>

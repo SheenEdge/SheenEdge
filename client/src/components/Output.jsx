@@ -23,7 +23,8 @@ import { executeCode } from "../api";
 import { CloseIcon } from "@chakra-ui/icons"; // Import CloseIcon for remove button
 
 const Output = ({ editorRef, language, id }) => {
-  const toast = useToast();
+
+  
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
