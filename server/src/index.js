@@ -29,6 +29,7 @@ app.use(cors({
   }));
 
 app.options('*', cors());
+app.set('trust proxy', 1); // Ensures secure cookies are properly set behind a proxy
 
 // Handling cookies and sessions 
 
