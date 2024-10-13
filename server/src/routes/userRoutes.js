@@ -27,6 +27,6 @@ router.post('/login', (req, res, next) => {
   });
   
 router.post("/logout", logoutUser)
-router.get('/current',isAuthenticated, currentUser)
+router.get('/current', currentUser)
 
 module.exports = router;
