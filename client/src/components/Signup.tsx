@@ -19,7 +19,7 @@ const SignUp = () => {
       setError("Passwords do not match.");
       return;
     }
-
+    console.log(email);
     try {
       const response = await fetch(`${baseurl}/api/user/register`, {
         method: 'POST',
@@ -68,7 +68,7 @@ const SignUp = () => {
               id="email"
               className="w-full p-2 rounded border border-gray-600 bg-gray-800 text-white"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.toLowerCase())}
               required
             />
           </div>

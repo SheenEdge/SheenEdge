@@ -51,6 +51,7 @@ app.use(passport.session());
 
 // Defining the routes
 app.use("/api/user" , require('./routes/userRoutes'));
+app.use("/api/rodo" , require('./routes/rodoRoute'));
 app.use("/api/codes", isAuthenticated ,require('./routes/codeRoutes'))
 app.use("/api/post", isAdmin ,require('./routes/postRoutes'))
 

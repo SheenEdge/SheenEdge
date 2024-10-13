@@ -4,14 +4,6 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Send } from "lucide-react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-
-
-// Initialize Google Generative AI with the API key
-const key = import.meta.env.VITE_GEMINI_KEY
-const genAI = new GoogleGenerativeAI(key);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 interface Message {
   id: number;
@@ -23,6 +15,7 @@ export default function Rodo() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const baseurl = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -31,13 +24,26 @@ export default function Rodo() {
   }, [messages]);
 
   const fetchRoadmap = async (topic: string) => {
-    const prompt = `Provide a roadmap for learning ${topic}.`;
-    
-    // Generate content using the model
-    const result = await model.generateContent(prompt);
-    console.log(result.response.text())
-    return result.response.text(); // Adjust based on the actual structure of the response
+    try {
+      const response = await fetch(`${baseurl}/api/rodo/generate-roadmap`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ topic }),
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to fetch roadmap');
+      }
+
+      const data = await response.json();
+      console.log(data);
+      return data.roadmap;
+    } catch (error) {
+      console.error('Error fetching roadmap:', error);
+      return `Sorry, I couldn't fetch the roadmap for "${topic}". Please try again later.`;
+    }
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -53,7 +59,7 @@ export default function Rodo() {
     setMessages(prevMessages => [...prevMessages, newUserMessage]);
     setInputValue('');
 
-    // Fetch the roadmap from the API
+    // Fetch the roadmap from the backend
     try {
       const roadmapMessage = await fetchRoadmap(inputValue);
       const aiResponse: Message = {
@@ -91,7 +97,7 @@ export default function Rodo() {
                 <AvatarFallback>{message.sender === 'user' ? 'U' : 'AI'}</AvatarFallback>
               </Avatar>
               <div className={`mx-2 p-3 rounded-lg ${message.sender === 'user' ? 'bg-blue-600' : 'bg-gray-700'}`}>
-              {message.text.split('\n').map((line, index) => (
+                {message.text.split('\n').map((line, index) => (
                   <React.Fragment key={index}>
                     {line}
                     <br />
