@@ -22,8 +22,10 @@ const port =process.env.PORT || 5000;
 app.use(express.json());
 app.use(errorHandler) 
 app.use(cors({
-	origin: 'https://www.sheenedge.com', 
-	credentials: true
+	origin: 'https://www.sheenedge.com',
+    	credentials: true,
+    	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    	allowedHeaders: ['Content-Type', 'Authorization'],
   }));
 
 app.options('*', cors());
