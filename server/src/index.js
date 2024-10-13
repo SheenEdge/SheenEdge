@@ -34,18 +34,20 @@ app.options('*', cors());
 
 app.use(cookieParser("helloworld"));
 app.use(
-		session({
-			secret: "Edunex",
-			saveUninitialized: true,
-			sameSite: 'None',
-			resave: false,
-			cookie: {
-				maxAge: 60000 * 60 * 24 * 30 ,
-			},
-			store: MongoStore.create({
-				client: mongoose.connection.getClient(),
-			}),
-		})
+    session({
+        secret: process.env.SESSION_SECRET || "Edunex", // Use an environment variable for the secret
+        saveUninitialized: false, // Don't create sessions for unauthenticated users
+        resave: false,
+        cookie: {
+            maxAge: 60000 * 60 * 24 * 30, // 30 days
+            httpOnly: true, // Prevents JavaScript access to cookies
+            secure: process.env.NODE_ENV === 'production', // Set to true in production
+            sameSite: 'None', // Necessary for cross-origin requests
+        },
+        store: MongoStore.create({
+            client: mongoose.connection.getClient(),
+        }),
+    })
 );
 
 // Using passport 
