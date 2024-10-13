@@ -2,14 +2,18 @@
     "version": 2,
     "builds": [
         {
-            "src": "*/.js",
+            "src": "src/index.js",  // Adjust this to point to your main file
             "use": "@vercel/node"
         }
     ],
     "routes": [
         {
+            "src": "/api/(.*)",  // Route API requests to your Express app
+            "dest": "src/index.js" // Ensure this points to your main server file
+        },
+        {
             "src": "/(.*)",
-            "dest": "/"
+            "dest": "/src/index.js" // Route other requests to your app as needed
         }
     ]
 }
