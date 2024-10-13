@@ -22,7 +22,7 @@ const port =process.env.PORT || 5000;
 app.use(express.json());
 app.use(errorHandler) 
 app.use(cors({
-	origin: 'https://sheenedge-frontend.vercel.app', 
+	origin: 'https://www.sheenedge.com', 
 	credentials: true
   }));
 
