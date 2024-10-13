@@ -37,6 +37,7 @@ app.use(
 		session({
 			secret: "Edunex",
 			saveUninitialized: true,
+			sameSite: 'None',
 			resave: false,
 			cookie: {
 				maxAge: 60000 * 60 * 24 * 30 ,
