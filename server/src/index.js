@@ -22,27 +22,33 @@ const port =process.env.PORT || 5000;
 app.use(express.json());
 app.use(errorHandler) 
 app.use(cors({
-	origin: 'http://localhost:5173', 
-	credentials: true
+	origin: 'https://www.sheenedge.com',
+    	credentials: true,
+    	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    	allowedHeaders: ['Content-Type', 'Authorization'],
   }));
 
-
+app.options('*', cors());
+app.set('trust proxy', 1); // Ensures secure cookies are properly set behind a proxy
 
 // Handling cookies and sessions 
 
 app.use(cookieParser("helloworld"));
 app.use(
-		session({
-			secret: "Edunex",
-			saveUninitialized: true,
-			resave: false,
-			cookie: {
-				maxAge: 60000 * 60 * 24 * 30 ,
-			},
-			store: MongoStore.create({
-				client: mongoose.connection.getClient(),
-			}),
-		})
+    session({
+        secret: process.env.SESSION_SECRET || "Edunex", // Use an environment variable for the secret
+        saveUninitialized: false, // Don't create sessions for unauthenticated users
+        resave: false,
+        cookie: {
+            maxAge: 60000 * 60 * 24 * 30, // 30 days
+            httpOnly: true, // Prevents JavaScript access to cookies
+            secure: true, // Set to true in production
+            sameSite: 'None', // Necessary for cross-origin requests
+        },
+        store: MongoStore.create({
+            client: mongoose.connection.getClient(),
+        }),
+    })
 );
 
 // Using passport 

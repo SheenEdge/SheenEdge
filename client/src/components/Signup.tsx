@@ -10,6 +10,7 @@ const SignUp = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const baseurl = import.meta.env.VITE_BASE_URL;
+  console.log(baseurl);
   const navigate = useNavigate(); // Hook to programmatically navigate
 
   const handleSignUp = async (e : any) => {

@@ -34,6 +34,7 @@ const Login = () => {
 
       const data = await response.json();
       // Dispatch the user data to Redux
+      console.log(response);
       dispatch(setUserDet(data)); // Assuming `data.user` contains user info
       console.log('Login successful:', data);
       navigate('/'); // Redirect to the home page
