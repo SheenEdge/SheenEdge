@@ -21,7 +21,8 @@ passport.deserializeUser(async (id, done) => {
 passport.use( 
 	new Strategy({usernameField : "email"}, async (email, password, done) => {
 		try {
-			const findUser = await User.findOne({email})
+			const findUser = await User.findOne({ email }).select("+password");
+            console.log(findUser)
 			if (!findUser) return done("User not found");
 			if (!comparePassword(password, findUser.password)) return done("Bad Credentials");
 			done(null, findUser);
