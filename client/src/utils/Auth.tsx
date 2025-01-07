@@ -1,5 +1,4 @@
-import type { RootState } from '../redux/store';
-import { useSelector, useDispatch } from 'react-redux';
+import {useDispatch } from 'react-redux';
 import { setUserDet, clearUserDet } from '../redux/slice/userSlice';
 
 const baseurl = import.meta.env.VITE_BASE_URL;
