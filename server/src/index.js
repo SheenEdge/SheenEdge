@@ -1,15 +1,10 @@
 const cookieParser = require("cookie-parser");
 const express = require("express");
-const session = require("express-session");
 const cors = require('cors');
 const dotenv = require("dotenv").config();
-const errorHandler = require("./Middelware/errorHandler");
 const connectDb = require('./config/dbConnection');
-const MongoStore = require("connect-mongo");
 const morgan = require("morgan");
 const { logger } = require('./utils/logger');
-const passport = require('./strategies/local-strategy');
-const mongoose = require("mongoose");
 const { isAuthenticated } = require("./Middelware/isAuthenticated");
 const { isAdmin } = require("./Middelware/isAdmin");
 const morganFormat = ":method :url :status :response-time ms";
@@ -35,27 +30,6 @@ app.use(cors({
 
 app.options('*', cors());
 
-// Handling sessions
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET || "Edunex",
-        saveUninitialized: false,
-        resave: false,
-        cookie: {
-            maxAge: 60000 * 60 * 24 * 30, // 30 days
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-        },
-        store: MongoStore.create({
-            client: mongoose.connection.getClient(),
-        }),
-    })
-);
-
-// Using passport 
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Logging middleware
 app.use(
@@ -78,7 +52,7 @@ app.use(
 app.use("/api/user", require('./routes/userRoutes'));
 app.use("/api/rodo", require('./routes/rodoRoute'));
 app.use("/api/codes",isAuthenticated, require('./routes/codeRoutes'));
-app.use("/api/post", isAdmin, require('./routes/postRoutes'));
+//app.use("/api/post", isAdmin, require('./routes/postRoutes'));
 
 // Starting the server
 app.listen(port, () => {

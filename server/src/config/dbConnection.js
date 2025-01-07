@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 
-// Making connection to the database
+// Making connection to the database with connection pooling
+const connectDb = async () => {
+    try {
+        const connect = await mongoose.connect(process.env.MONGODB_URI, {
+            maxPoolSize: 10, // Set the connection pool size (adjust as per your app's needs)
+        });
 
-const connectDb = async () =>{
-    try{
-        const connect = await mongoose.connect(process.env.MONGODB_URI);
         console.log(
-            "Database connected",
-            connect.connection.host,
-            connect.connection.name
+            `Database connected: Host - ${connect.connection.host}, Name - ${connect.connection.name}`
         );
-    }catch(err){
-        console.log(err);
-        process.exit(1);
+    } catch (err) {
+        console.error("Database connection error:", err.message);
+        process.exit(1); // Exit the process with failure
     }
 };
 

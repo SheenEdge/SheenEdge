@@ -19,9 +19,10 @@ interface ExecuteCodeResponse {
 export const executeCode = async (language: Language, sourceCode: string): Promise<ExecuteCodeResponse> => {
   try {
     // Make a POST request to the Piston API
+    console.log(LANGUAGE_VERSIONS[language]);
     const response = await axios.post<ExecuteCodeResponse>("https://emkc.org/api/v2/piston/execute", {
       language: language,
-      version: LANGUAGE_VERSIONS[language], // Now TypeScript knows 'language' is a valid key
+      version: LANGUAGE_VERSIONS[language], // Pass the version from the LANGUAGE_VERSIONS object
       files: [
         {
           content: sourceCode, // Source code to be executed

@@ -40,6 +40,7 @@ const Output: React.FC<OutputProps> = ({ editorRef, language, id }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to control dropdown visibility
   const toast = useToast();
   const baseurl = import.meta.env.VITE_BASE_URL;
+  const token = localStorage.getItem('token'); // Retrieve token from localStorage
 
   // Fetch emails on component mount
   useEffect(() => {
@@ -47,9 +48,9 @@ const Output: React.FC<OutputProps> = ({ editorRef, language, id }) => {
       try {
         const response = await fetch(`${baseurl}/api/codes/${id}`, {
           method: "GET",
-          credentials: 'include',
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in Authorization header
           },
         });
 
@@ -102,9 +103,9 @@ const Output: React.FC<OutputProps> = ({ editorRef, language, id }) => {
       setIsLoading(true);
       const response = await fetch(`${baseurl}/api/codes/save/${id}`, {
         method: "PUT",
-        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in Authorization header
         },
         body: JSON.stringify({ content }),
       });
@@ -143,9 +144,9 @@ const Output: React.FC<OutputProps> = ({ editorRef, language, id }) => {
       try {
         const response = await fetch(`${baseurl}/api/codes/give/${id}`, {
           method: "PUT",
-          credentials: 'include',
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in Authorization header
           },
           body: JSON.stringify({ email: newEmail }),
         });
@@ -189,9 +190,9 @@ const Output: React.FC<OutputProps> = ({ editorRef, language, id }) => {
     try {
       const response = await fetch(`${baseurl}/api/codes/take/${id}`, {
         method: "PUT",
-        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in Authorization header
         },
         body: JSON.stringify({ email: emailToRemove }),
       });

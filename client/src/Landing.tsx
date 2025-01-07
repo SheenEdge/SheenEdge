@@ -5,30 +5,35 @@ import { Code2, Users, Map, BookOpen, ChevronRight, Menu, X } from "lucide-react
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from './redux/store';
-import { logout } from './redux/slice/userSlice';
-
+import { clearUserDet } from './redux/slice/userSlice';
 
 export default function Landing() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const user = useSelector((state: RootState) => state.user._id);
   const dispatch = useDispatch();
   const baseurl = import.meta.env.VITE_BASE_URL;
-  const handleLogout = async () => {
-    const response = await fetch(`${baseurl}/api/user/logout`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-  });
 
-  if (response.ok) {
-      dispatch(logout());
-      console.log("Logged out")
-  } else {
-      console.error('Error fetching user data');
-  }
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`${baseurl}/api/user/logout`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        dispatch(clearUserDet()); // Corrected: use `clearUserDet` to clear user details
+        console.log("Logged out");
+      } else {
+        console.error('Error logging out');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
   };
+
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <header className="container mx-auto px-4 py-6 flex justify-between items-center">

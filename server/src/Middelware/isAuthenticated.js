@@ -9,7 +9,6 @@ const isAuthenticated = (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
-    console.log("JWT_SECRET:", process.env.JWT_SECRET);
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded; // Attach user payload (e.g., ID) to the request object

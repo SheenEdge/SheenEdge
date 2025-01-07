@@ -20,11 +20,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ id }) => {
   useEffect(() => {
     const fetchCodeFile = async () => {
       try {
+        const token = localStorage.getItem('token'); // Retrieve token from localStorage
         const response = await fetch(`${baseurl}/api/codes/${id}`, {
           method: 'GET',
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
+             Authorization: `Bearer ${token}`, // Include token in Authorization header
           },
         });
   

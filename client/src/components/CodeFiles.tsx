@@ -40,14 +40,15 @@ export default function CodeFiles() {
   const navigate = useNavigate(); // Initialize useNavigate
   const toast = useToast();
   const baseurl = import.meta.env.VITE_BASE_URL;
+  const token = localStorage.getItem('token'); // Retrieve token from localStorage
   // Function to fetch files
   const fetchFiles = async () => {
     try {
       const response = await fetch(`${baseurl}/api/codes`, {
         method: "GET",
-        credentials: "include", // Make sure cookies are sent
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in Authorization header
         },
       });
       if (response.ok) {
@@ -90,9 +91,9 @@ export default function CodeFiles() {
       try {
         const response = await fetch(`${baseurl}/api/codes/create`, {
           method: "POST",
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in Authorization header
           },
           body: JSON.stringify({
             FileName: newFileName,
@@ -125,9 +126,9 @@ export default function CodeFiles() {
     try {
       const response = await fetch(`${baseurl}/api/codes/${file.id}`, {
         method: "GET",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in Authorization header
         },
       });
       if (response.ok) {

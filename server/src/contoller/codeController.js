@@ -23,7 +23,7 @@ const createCodeFile = asyncHandler(async (req, res) => {
 
 // Update code file 
 const updateCodeFile = asyncHandler(async (req, res) => {
-    const codeFile = await CodeFile.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const codeFile = await CodeFile.findByIdAndUpdate(req.params.id, req.body, { new: true }).lean();
 
     if (!codeFile) {
         return res.status(404).json({ message: "Code file not found" });
@@ -70,15 +70,14 @@ const giveAccess = asyncHandler(async (req, res) => {
 // Remove the access from the code file 
 const removeAccess = asyncHandler(async (req, res) => {
     const { email } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).lean();
 
     if (!user) {
         return res.status(404).json({ message: "User not found" });
     }
 
-    const codeFile = await CodeFile.findById(req.params.id);
-    
-    console.log(codeFile)
+    const codeFile = await CodeFile.findById(req.params.id).lean();
+    if(!codeFile) return res.status(404).json({"message":"Code file do not exist"})
     if (codeFile.UserId.toString() !== req.user.id) {
         return res.status(401).json({ message: "Only creator can remove access" });
     }

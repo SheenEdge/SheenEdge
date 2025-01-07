@@ -25,7 +25,7 @@ const createUser =asyncHandler ( async (req , res) =>{
         password,
     })
 
-    res.status(201).json(user);
+    res.status(201).json({"message": "User created successfully"});
 });
 
 const loginUser = asyncHandler( async (req, res) =>{
@@ -47,7 +47,13 @@ const loginUser = asyncHandler( async (req, res) =>{
       // Generate JWT
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
   
-      res.status(200).json({ message: "Login successful", token });
+      res.status(200).json({ message: "Login successful", token,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email
+        }
+      });
     } catch (error) {
       res.status(500).json({ message: "Server error", error: error.message });
     }
@@ -71,6 +77,7 @@ const logoutUser = (req, res) => {
 
 const currentUser = async (req, res) => {
     try {
+        console.log(req.user.id)
         const user = await User.findById(req.user.id);
         if (!user) {
           return res.status(404).json({ message: "User not found" });
