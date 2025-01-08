@@ -22,22 +22,26 @@ import {
 import { executeCode } from "../api";
 import { CloseIcon } from "@chakra-ui/icons";
 
+// Define supported languages
+type SupportedLanguage = "javascript" | "typescript" | "python" | "java" | "csharp" | "php";
+
 // Define prop types for Output component
 interface OutputProps {
-  editorRef: MutableRefObject<any>; // Editor reference
-  language: any; // Programming language
+  editorRef: MutableRefObject<{ getValue: () => string | undefined }> | null; // Editor reference with getValue method
+  language: SupportedLanguage; // Programming language as SupportedLanguage
   id: string; // Code file ID
 }
 
 const Output: React.FC<OutputProps> = ({ editorRef, language, id }) => {
   const [output, setOutput] = useState<string[] | null>(null); // Code output
-  const [isLoading, setIsLoading] = useState(false); // Loading state for running code
-  const [isError, setIsError] = useState(false); // Error state for code output
+  const [isLoading, setIsLoading] = useState<boolean>(false); // Loading state for saving code
+  const [isLoading_run, setIsLoading_run] = useState<boolean>(false); // Loading state for running code
+  const [isError, setIsError] = useState<boolean>(false); // Error state for code output
   const [emails, setEmails] = useState<string[]>([]); // List of emails with access
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state for new email input
-  const [newEmail, setNewEmail] = useState(''); // New email input
-  const [isRemoving, setIsRemoving] = useState(false); // State to toggle email removal
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to control dropdown visibility
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Modal state for new email input
+  const [newEmail, setNewEmail] = useState<string>(''); // New email input
+  const [isRemoving, setIsRemoving] = useState<boolean>(false); // State to toggle email removal
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false); // State to control dropdown visibility
   const toast = useToast();
   const baseurl = import.meta.env.VITE_BASE_URL;
   const token = localStorage.getItem('token'); // Retrieve token from localStorage
@@ -72,26 +76,37 @@ const Output: React.FC<OutputProps> = ({ editorRef, language, id }) => {
     };
 
     fetchEmails();
-  }, [id]); // Depend on `id` to fetch emails for the correct code
+  }, [baseurl, id, toast, token]); // Depend on `id` to fetch emails for the correct code
 
   const runCode = async () => {
     const sourceCode = editorRef.current?.getValue();
     if (!sourceCode) return;
     try {
-      setIsLoading(true);
+      setIsLoading_run(true);
       const { run: result } = await executeCode(language, sourceCode);
       setOutput(result.output.split("\n"));
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       result.stderr ? setIsError(true) : setIsError(false);
-    } catch (error : any) {
-      console.log(error);
-      toast({
-        title: "An error occurred.",
-        description: error.message || "Unable to run code",
-        status: "error",
-        duration: 6000,
-      });
+    } catch (error) {
+        if (error instanceof Error) {
+          console.log(error);
+          toast({
+            title: "An error occurred.",
+            description: error.message || "Unable to run code",
+            status: "error",
+            duration: 6000,
+          });
+        } else {
+          console.log(error);
+          toast({
+            title: "An error occurred.",
+            description:"Unable to run code",
+            status: "error",
+            duration: 6000,
+          });
+        }
     } finally {
-      setIsLoading(false);
+      setIsLoading_run(false);
     }
   };
 
@@ -232,7 +247,7 @@ const Output: React.FC<OutputProps> = ({ editorRef, language, id }) => {
         variant="outline"
         colorScheme="green"
         mb={4}
-        isLoading={isLoading}
+        isLoading={isLoading_run}
         onClick={runCode}
       >
         Run Code

@@ -15,20 +15,20 @@ const App = () => {
   setUser();
   return (
     <ChakraProvider theme={theme}>
-  <Router>
-  <Routes>
-  <Route index element={<Landing />} />
-  <Route path="/" element={<Landing />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/home" element={<Landing />} />
-    <Route path="/signUp" element={<SignUp/>} />
-    <Route path="/codo" element={<CodeFiles/>} />
-    <Route path="/codo/:id" element={<Codo/>} />
-    <Route path="/rodo" element={<Rodo/>} />
-    <Route path="*" element={<NotFound />} />
-  </Routes>
-</Router>
-</ChakraProvider>
+      <Router>
+        <Routes>
+        <Route index element={<Landing />} />
+        <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Landing />} />
+          <Route path="/signUp" element={<SignUp/>} />
+          <Route path="/codo" element={<CodeFiles/>} />
+          <Route path="/codo/:id" element={<Codo/>} />
+          <Route path="/rodo" element={<Rodo/>} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </ChakraProvider>
   )
 }
 
