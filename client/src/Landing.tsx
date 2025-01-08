@@ -43,7 +43,7 @@ export default function Landing() {
           <Link to="" className="hover:text-blue-400 transition-colors">
             Features
           </Link>
-          <Link to="#community" className="hover:text-blue-400 transition-colors">
+          <Link to="https://chat.whatsapp.com/C1SNuadJrlVExk1DlmZ572" className="hover:text-blue-400 transition-colors">
             Community
           </Link>
           <Link to="#resources" className="hover:text-blue-400 transition-colors">
@@ -94,7 +94,7 @@ export default function Landing() {
               </Link>
             </li>
             <li>
-              <Link to="#community" className="hover:text-blue-400 transition-colors">
+              <Link to="https://chat.whatsapp.com/C1SNuadJrlVExk1DlmZ572" className="hover:text-blue-400 transition-colors">
                 Community
               </Link>
             </li>
@@ -176,7 +176,7 @@ export default function Landing() {
               Connect with thousands of students, mentors, and industry professionals. Learn, share, and grow together.
             </p>
             <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-              Join Community
+              <a href="https://chat.whatsapp.com/C1SNuadJrlVExk1DlmZ572">Join Community</a>
             </Button>
           </div>
         </section>
