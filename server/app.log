@@ -3161,3 +3161,5 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/codes/677cf80d8d16c4dced085d4e\",\"status\":\"304\",\"responseTime\":\"59.673\"}","timestamp":"2025-01-08T07:10:45.401Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/codes/677cf80d8d16c4dced085d4e\",\"status\":\"304\",\"responseTime\":\"57.090\"}","timestamp":"2025-01-08T07:10:45.514Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/codes/677cf80d8d16c4dced085d4e\",\"status\":\"304\",\"responseTime\":\"61.075\"}","timestamp":"2025-01-08T07:11:21.441Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/user/current\",\"status\":\"304\",\"responseTime\":\"46.207\"}","timestamp":"2025-01-08T08:42:55.303Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/user/current\",\"status\":\"304\",\"responseTime\":\"31.693\"}","timestamp":"2025-01-08T08:43:21.613Z"}
