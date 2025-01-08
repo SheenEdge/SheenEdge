@@ -27,6 +27,7 @@ const Login = () => {
       setError(''); // Clear previous errors
       const response = await fetch(`${baseurl}/api/user/login`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, MutableRefObject } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Box, HStack, Spinner } from "@chakra-ui/react";
 import { Editor } from "@monaco-editor/react";
 import LanguageSelector from "./LanguageSelector";
@@ -11,15 +11,6 @@ interface CodeEditorProps {
   id: string;
 }
 
-interface OutputProps {
-
-  editorRef: MutableRefObject<{ getValue: () => string | undefined } | null>; // Editor reference with getValue method
-
-  language: SupportedLanguage; // Programming language as SupportedLanguage
-
-  id: string; // Code file ID
-
-}
 const CodeEditor: React.FC<CodeEditorProps> = ({ id }) => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [value, setValue] = useState<string>("");

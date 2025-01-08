@@ -20,6 +20,7 @@ const port = process.env.PORT || 5000;
 // Using middlewares
 app.use(express.json());
 app.use(cookieParser("helloworld"));
+app.set('trust proxy', 1); // Ensures secure cookies are properly set behind a proxy
 
 app.use(cors({
     origin: process.env.BASE_URL,
