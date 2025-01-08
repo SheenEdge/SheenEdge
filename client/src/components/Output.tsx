@@ -21,13 +21,14 @@ import {
 } from "@chakra-ui/react";
 import { executeCode } from "../api";
 import { CloseIcon } from "@chakra-ui/icons";
+import * as monaco from "monaco-editor";
 
 // Define supported languages
 type SupportedLanguage = "javascript" | "typescript" | "python" | "java" | "csharp" | "php";
 
 // Define prop types for Output component
 interface OutputProps {
-  editorRef: MutableRefObject<{ getValue: () => string | undefined }> | null; // Editor reference with getValue method
+  editorRef: MutableRefObject<monaco.editor.IStandaloneCodeEditor | null>; // Editor reference with getValue method
   language: SupportedLanguage; // Programming language as SupportedLanguage
   id: string; // Code file ID
 }
