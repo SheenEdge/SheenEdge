@@ -15,5 +15,6 @@
             "src": "/(.*)",
             "dest": "/src/index.js" 
         }
-    ]
+    ],
+    "regions": ["bom1"]
 }
