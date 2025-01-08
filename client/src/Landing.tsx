@@ -2,34 +2,26 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Code2, Users, Map, BookOpen, ChevronRight, Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from './redux/store';
 import { clearUserDet } from './redux/slice/userSlice';
+import { setUser } from "./utils/Auth";
 
 export default function Landing() {
-  const [isNavOpen, setIsNavOpen] = useState(false);
-  const user = useSelector((state: RootState) => state.user._id);
-  const dispatch = useDispatch();
-  const baseurl = import.meta.env.VITE_BASE_URL;
+  const location = useLocation();
 
+  if (location.state?.from === "/login") {
+    setUser();
+  }
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const user = useSelector((state: RootState) => state.user._id); // Access global user state
+  const dispatch = useDispatch();
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${baseurl}/api/user/logout`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        dispatch(clearUserDet()); // Corrected: use `clearUserDet` to clear user details
-        console.log("Logged out");
-      } else {
-        console.error('Error logging out');
-      }
-    } catch (error) {
+        localStorage.removeItem('token'); // Clear the token from localStorage
+        dispatch(clearUserDet());
+      } catch (error) {
       console.error('An error occurred:', error);
     }
   };
@@ -58,17 +50,20 @@ export default function Landing() {
             Resources
           </Link>
         </nav>
-        {user? 
-        <Button variant="outline" onClick={handleLogout}>
-          Log Out
-        </Button>
-        :<div className="flex max-sm:hidden max-md:hidden"><Button variant="outline" className=" mr-[10px]">
-          <Link to="/login">Login</Link>
-        </Button>
-        <Button variant="outline" className=" mr-[10px]">
-          <Link to="/signup">Register</Link>
-        </Button></div>
-        }
+        {user ? (
+          <Button variant="outline" onClick={handleLogout}>
+            Log Out
+          </Button>
+        ) : (
+          <div className="flex max-sm:hidden max-md:hidden">
+            <Button variant="outline" className="mr-[10px]">
+              <Link to="/login">Login</Link>
+            </Button>
+            <Button variant="outline" className="mr-[10px]">
+              <Link to="/signup">Register</Link>
+            </Button>
+          </div>
+        )}
 
         {/* Mobile Menu Button */}
         <button
@@ -94,7 +89,7 @@ export default function Landing() {
               </Link>
             </li>
             <li>
-              <Link to="#features"  className="hover:text-blue-400 transition-colors">
+              <Link to="#features" className="hover:text-blue-400 transition-colors">
                 Features
               </Link>
             </li>
@@ -122,7 +117,7 @@ export default function Landing() {
         </nav>
       )}
 
-<main>
+      <main>
         <section className="container mx-auto px-4 py-20 text-center">
           <h1 className="text-5xl font-bold mb-6">Empower Your Coding Journey</h1>
           <p className="text-xl mb-8 max-w-2xl mx-auto">

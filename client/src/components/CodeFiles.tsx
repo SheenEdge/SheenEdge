@@ -24,7 +24,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { File, Plus } from "lucide-react";
-import { useToast } from "@chakra-ui/react";
+import { Spinner, useToast } from "@chakra-ui/react";
 type FileType = {
   id: string;
   name: string;
@@ -37,6 +37,7 @@ export default function CodeFiles() {
   const [newFileName, setNewFileName] = useState("");
   const [newFileLanguage, setNewFileLanguage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
   const toast = useToast();
   const baseurl = import.meta.env.VITE_BASE_URL;
@@ -44,6 +45,7 @@ export default function CodeFiles() {
   // Function to fetch files
   const fetchFiles = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(`${baseurl}/api/codes`, {
         method: "GET",
         headers: {
@@ -53,7 +55,7 @@ export default function CodeFiles() {
       });
       if (response.ok) {
         const data = await response.json();
-        const processedFiles = data.map((file: any) => ({
+        const processedFiles = data.map((file: { _id: string; FileName: string; language: string; createdAt: string }) => ({
           id: file._id,
           name: file.FileName,
           language: file.language,
@@ -61,7 +63,7 @@ export default function CodeFiles() {
         }));
         setFiles(processedFiles);
       } else {
-        if (response.status === 401) {
+        if (response.status === 403) {
           toast({
             title: "Error",
             description: "Please log in.",
@@ -74,15 +76,17 @@ export default function CodeFiles() {
           console.error("Failed to fetch files.");
         }
       }
-    } catch (error) {
+    }catch (error) {
       console.error("Error fetching files:", error);
     }
+    finally{
+      setIsLoading(false);
+    } 
   };
 
   // Fetch files when component mounts
   useEffect(() => {
     fetchFiles();
-    console.log("called");
   }, []);
 
   // Create new file handler
@@ -144,7 +148,8 @@ export default function CodeFiles() {
   };
 
   return (
-    <div className="container mx-auto p-4 min-h-screen bg-gray-900 text-gray-100">
+    isLoading? <div className="flex justify-center items-center h-screen"><Spinner size="xl" /></div> :
+    (<div className="container mx-auto p-4 min-h-screen bg-gray-900 text-gray-100">
       <h1 className="text-2xl font-bold mb-4">Your Files</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
         {files.map((file) => (
@@ -220,6 +225,6 @@ export default function CodeFiles() {
           </Button>
         </DialogContent>
       </Dialog>
-    </div>
+    </div>)
   );
 }

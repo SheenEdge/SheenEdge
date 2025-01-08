@@ -1,64 +1,86 @@
-import { useRef, useState, useEffect } from "react";
-import { Box, HStack } from "@chakra-ui/react";
-import { Editor } from "@monaco-editor/react"; // Use only Editor from @monaco-editor/react
+import { useRef, useState, useEffect, MutableRefObject } from "react";
+import { Box, HStack, Spinner } from "@chakra-ui/react";
+import { Editor } from "@monaco-editor/react";
 import LanguageSelector from "./LanguageSelector";
 import Output from "./Output";
-import * as monaco from 'monaco-editor'; // Import monaco for types and instance access
+import * as monaco from "monaco-editor";
+
+type SupportedLanguage = "javascript" | "typescript" | "python" | "java";
 
 interface CodeEditorProps {
   id: string;
 }
 
+interface OutputProps {
+
+  editorRef: MutableRefObject<{ getValue: () => string | undefined } | null>; // Editor reference with getValue method
+
+  language: SupportedLanguage; // Programming language as SupportedLanguage
+
+  id: string; // Code file ID
+
+}
 const CodeEditor: React.FC<CodeEditorProps> = ({ id }) => {
-  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null); // Use monaco.editor types
-  const [value, setValue] = useState<string>(""); // Code content
-  const [language, setLanguage] = useState<string>("javascript"); // Default language
-  const [isLoading, setIsLoading] = useState<boolean>(true); // Loading state
+  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const [value, setValue] = useState<string>("");
+  const [language, setLanguage] = useState<SupportedLanguage>("javascript");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const baseurl = import.meta.env.VITE_BASE_URL;
 
-  // Fetch the code file data when the component mounts
   useEffect(() => {
     const fetchCodeFile = async () => {
       try {
-        const token = localStorage.getItem('token'); // Retrieve token from localStorage
+        const token = localStorage.getItem("token");
         const response = await fetch(`${baseurl}/api/codes/${id}`, {
-          method: 'GET',
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
-             Authorization: `Bearer ${token}`, // Include token in Authorization header
+            Authorization: `Bearer ${token}`,
           },
         });
-  
+
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error(`Error: ${response.statusText}`);
         }
-  
-        const data = await response.json(); // Parse the JSON data
-        const { content, language } = data; // Destructure the response
-        setValue(content); // Set the code content
-        setLanguage(language); // Set the programming language
-        setIsLoading(false); // Loading complete
+
+        const data = await response.json();
+        const { content, language } = data;
+
+        if (
+          ["javascript", "typescript", "python", "java"].includes(language)
+        ) {
+          setLanguage(language as SupportedLanguage);
+        }
+
+        setValue(content || "");
+        setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching the code file:', error);
-        setIsLoading(false); // Stop loading on error
+        console.error("Error fetching the code file:", error);
+        setIsLoading(false);
       }
     };
-  
-    fetchCodeFile();
-  }, [id]);
 
-  // This function will store the editor instance and focus it
+    fetchCodeFile();
+  }, [id, baseurl]);
+
   const onMount = (editorInstance: monaco.editor.IStandaloneCodeEditor) => {
     editorRef.current = editorInstance;
     editorInstance.focus();
   };
 
   const onSelect = (selectedLanguage: string) => {
-    setLanguage(selectedLanguage);
+    if (["javascript", "typescript", "python", "java"].includes(selectedLanguage)) {
+      setLanguage(selectedLanguage as SupportedLanguage);
+    }
   };
 
   if (isLoading) {
-    return <Box>Loading...</Box>; // Show a loading indicator while fetching data
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="xl" />
+      </div>
+    );
   }
 
   return (
@@ -73,8 +95,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ id }) => {
             height="75vh"
             theme="vs-dark"
             language={language}
-            value={value} // Dynamic value from the backend
-            onMount={onMount} // Correct signature
+            value={value}
+            onMount={onMount}
             onChange={(newValue) => setValue(newValue || "")}
           />
         </Box>
