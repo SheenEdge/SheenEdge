@@ -50,6 +50,11 @@ app.use(
 );
 
 // Defining the routes
+app.get('/', async(req, res) =>{
+    res.status(201).json({
+        message:"Welcome to the SheenEdges Backend Server and enjoy your ride."
+    })
+})
 app.use("/api/user", require('./routes/userRoutes'));
 app.use("/api/rodo", require('./routes/rodoRoute'));
 app.use("/api/codes",isAuthenticated, require('./routes/codeRoutes'));
