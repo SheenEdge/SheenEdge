@@ -30,7 +30,7 @@ const SignUp = () => {
         throw new Error('Sign Up failed');
       }
 
-      const data = await response.json();
+      // const data = await response.json();
       setSuccess('Sign Up successful!');
       navigate('/');
     } catch (error: any) {
